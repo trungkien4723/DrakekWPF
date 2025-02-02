@@ -1,0 +1,24 @@
+﻿<Window x:Class="drakek.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:drakek"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" 
+        AllowsTransparency="True" Background="Transparent"
+        Title="Drakek" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="15*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Background="gray">
+            
+        </Grid>
+        <Grid Grid.Column="1" Background="dark-gray">
+            
+        </Grid>
+    </Grid>
+</Window>
