@@ -48,13 +48,11 @@ public partial class MainWindow : Window
                 renderPages.Children.Clear();
                 switch (selectedItem.Name.ToString())
                 {
-                    case "btnDashboard":
+                    case "menuDashboard":
                         renderPages.Children.Add(new Controller.Dashboard());
-                        // renderPages.Content = new Controller.Dashboard();
                     break;
-                    case "btnProduct":
+                    case "menuProduct":
                         renderPages.Children.Add(new Controller.Product());
-                        // renderPages.Content = new Controller.Product();
                     break;
                     default:
                         renderPages.Children.Add(new Controller.Dashboard());

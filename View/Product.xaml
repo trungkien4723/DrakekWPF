@@ -6,6 +6,12 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
-        <TextBlock Text="This is Product page" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+        <DataGrid x:Name="ProductTable" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" HorizontalAlignment="Left" Height="450" Margin="10, 10, 0, 0" VerticalAlignment="Top" Width="550">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding id}" Width="50"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding name}" Width="200"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding price}" Width="100"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
