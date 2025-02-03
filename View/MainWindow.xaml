@@ -45,7 +45,7 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <StackPanel Orientation="Horizontal" Margin="10, 50, 0, 0" x:Name="renderPages"/>
+                    <StackPanel Orientation="Horizontal" Margin="5, 20, 0, 0" x:Name="renderPages"/>
                 </Grid>
         </Grid>
     </Grid>
