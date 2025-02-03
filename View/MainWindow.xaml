@@ -22,11 +22,15 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Content="Main Menu" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="10"/>
             <ListView Grid.Row="1" x:Name="mainMenu" HorizontalAlignment="Left" Height="450" Padding="10" VerticalAlignment="Top" Width="200" Background="Transparent" SelectionChanged="changeSelectedMenuPage">
-                <ListViewItem Content="Dashboard" Name="btnDashboard"/>
-                <ListViewItem Content="Product" Name="btnProduct"/>
-                <ListViewItem Content="Item 3"/>
-                <ListViewItem Content="Item 4"/>
-                <ListViewItem Content="Item 5"/>
+                <ListViewItem Content="Dashboard" Name="menuDashboard"/>
+                <ListViewItem Content="Product" Name="menuProduct"/>
+                <ListViewItem Content="People" Name="menuPeople"/>
+                <ListViewItem Content="Customer" Name="menuCustomer"/>
+                <ListViewItem Content="Order" Name="menuPOrder"/>
+                <ListViewItem Content="Coupon" Name="menuCoupon"/>
+                <ListViewItem Content="Role" Name="menuRole"/>
+                <ListViewItem Content="Permission" Name="menuPermission"/>
+                <ListViewItem Content="Setting" Name="menuSetting"/>
             </ListView>
         </Grid>
         <Grid Grid.Column="1" Background="lightgray">
@@ -41,7 +45,7 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <StackPanel Orientation="Horizontal" Margin="10, 50, 0, 0" x:Name="renderPages"/>
+                    <StackPanel Orientation="Horizontal" Margin="5, 20, 0, 0" x:Name="renderPages"/>
                 </Grid>
         </Grid>
     </Grid>
