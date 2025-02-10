@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using drakek.Model;
+using drakek.Data;
 
 namespace drakek.Controller
 {
@@ -21,22 +22,31 @@ namespace drakek.Controller
         }
 
         private void showProduct(){
-            List<Products> products = new List<Products>{
-                new Products {id = "1", name = "Product 1", price = 10000},
-                new Products {id = "2", name = "Product 2", price = 20000},
-            };
+            try
+            {
+                using (var context = new DrakekDB())
+                {
+                    var products = context.product.ToList();
 
-            List<object> productsData = new List<object>();
-            for(int i = 0; i < products.Count; i++){
-                productsData.Add(new {
-                    index = i + 1,
-                    id = products[i].id,
-                    name = products[i].name,
-                    price = products[i].price
-                });
+                    var productsData = new List<object>();
+                    for (int i = 0; i < products.Count(); i++)
+                    {
+                        productsData.Add(new
+                        {
+                            index = i + 1,
+                            id = products[i].id,
+                            name = products[i].name,
+                            price = products[i].price
+                        });
+                    }
+
+                    ProductTable.ItemsSource = productsData;
+                }
             }
-
-            ProductTable.ItemsSource = productsData;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
