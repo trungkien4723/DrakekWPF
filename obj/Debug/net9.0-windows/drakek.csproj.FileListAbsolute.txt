@@ -1,3 +1,11 @@
+D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.csproj.AssemblyReference.cache
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\DashBoard.baml
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\Product\ProductUpdateForm.baml
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\DashBoard.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\MainWindow.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\App.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek_MarkupCompile.cache
+D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek_MarkupCompile.lref
 D:\1attime\Drakek\bin\Debug\net9.0-windows\drakek.exe
 D:\1attime\Drakek\bin\Debug\net9.0-windows\drakek.deps.json
 D:\1attime\Drakek\bin\Debug\net9.0-windows\drakek.runtimeconfig.json
@@ -121,15 +129,6 @@ D:\1attime\Drakek\bin\Debug\net9.0-windows\runtimes\win-arm64\native\Microsoft.D
 D:\1attime\Drakek\bin\Debug\net9.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 D:\1attime\Drakek\bin\Debug\net9.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\1attime\Drakek\bin\Debug\net9.0-windows\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.csproj.AssemblyReference.cache
-D:\1attime\Drakek\obj\Debug\net9.0-windows\View\DashBoard.baml
-D:\1attime\Drakek\obj\Debug\net9.0-windows\View\Product\Product.baml
-D:\1attime\Drakek\obj\Debug\net9.0-windows\View\DashBoard.g.cs
-D:\1attime\Drakek\obj\Debug\net9.0-windows\View\MainWindow.g.cs
-D:\1attime\Drakek\obj\Debug\net9.0-windows\View\Product\Product.g.cs
-D:\1attime\Drakek\obj\Debug\net9.0-windows\App.g.cs
-D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek_MarkupCompile.cache
-D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek_MarkupCompile.lref
 D:\1attime\Drakek\obj\Debug\net9.0-windows\View\MainWindow.baml
 D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.g.resources
 D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.GeneratedMSBuildEditorConfig.editorconfig
@@ -143,3 +142,7 @@ D:\1attime\Drakek\obj\Debug\net9.0-windows\refint\drakek.dll
 D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.pdb
 D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.genruntimeconfig.cache
 D:\1attime\Drakek\obj\Debug\net9.0-windows\ref\drakek.dll
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\Product\ProductUpdateForm.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\Product\ProductView.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\Product\ProductView.baml
