@@ -22,7 +22,7 @@ public partial class MainWindow : Window
 
     private void Window_Loaded(object sender, RoutedEventArgs e){
         renderPages.Children.Clear();
-        renderPages.Children.Add(new ViewModel.DashboardView());
+        renderPages.Children.Add(new DashboardView());
     }
     private void Drag_Window(object sender, MouseButtonEventArgs e){
         this.DragMove();
@@ -49,13 +49,19 @@ public partial class MainWindow : Window
                 switch (selectedItem.Name.ToString())
                 {
                     case "menuDashboard":
-                        renderPages.Children.Add(new ViewModel.DashboardView());
+                        renderPages.Children.Add(new DashboardView());
                     break;
                     case "menuProduct":
-                        renderPages.Children.Add(new ViewModel.ProductView());
+                        renderPages.Children.Add(new ProductView());
+                    break;
+                    case "menuPeople":
+                        renderPages.Children.Add(new PeopleView());
+                    break;
+                    case "menuRole":
+                        renderPages.Children.Add(new RoleView());
                     break;
                     default:
-                        renderPages.Children.Add(new ViewModel.DashboardView());
+                        renderPages.Children.Add(new DashboardView());
                     break; 
                 }
             }

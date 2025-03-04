@@ -6,6 +6,8 @@ namespace drakek.Data
     public class DrakekDB : DbContext
     {
         public DbSet<Product> product { get; set; }
+        public DbSet<People> people { get; set; }
+        public DbSet<Role> role { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
