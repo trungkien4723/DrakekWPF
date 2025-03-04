@@ -33,7 +33,7 @@ namespace drakek.ViewModel
             People people = peopleController.getPeople(id);
             if(people != null){
                 PeopleName.Text = people.name;
-                selectedRole = people.role;
+                PeopleRole.SelectedValue = people.role;
                 PeopleEmail.Text = people.email;
                 PeoplePhone.Text = people.phone;
                 PeopleBirthday.SelectedDate = people.birthday;
@@ -51,7 +51,7 @@ namespace drakek.ViewModel
         private void clearForm()
         {
                 PeopleName.Text = "";
-                selectedRole = "";
+                selectedRole = null;
                 PeopleEmail.Text = "";
                 PeoplePhone.Text = "";
                 PeopleBirthday.SelectedDate = null;

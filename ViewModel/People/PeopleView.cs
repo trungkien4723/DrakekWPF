@@ -70,7 +70,7 @@ namespace drakek.ViewModel
                 role = roleController.getRole(people.role).name,
                 people.email,
                 people.phone,
-                people.birthday,
+                birthday = people.birthday.ToString("d"),
                 people.createdDate
             }).ToList();
             PeopleTable.ItemsSource = allPeopleData;

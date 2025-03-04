@@ -43,6 +43,7 @@
                         <DataGridTextColumn Header="Role" Binding="{Binding role}" Width="auto"/>
                         <DataGridTextColumn Header="Email" Binding="{Binding email}" Width="auto"/>
                         <DataGridTextColumn Header="Phone" Binding="{Binding phone}" Width="auto"/>
+                        <DataGridTextColumn Header="Birthday" Binding="{Binding birthday}" Width="auto"/>
                         <DataGridTextColumn Header="Created" Binding="{Binding createdDate}" Width="auto"/>
                         <DataGridTemplateColumn Header="Actions" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
