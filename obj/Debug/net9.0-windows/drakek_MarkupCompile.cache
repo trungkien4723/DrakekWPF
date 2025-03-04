@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
 D:\1attime\Drakek\App.xaml
-41194114309
+8-219315214
 
-12-1965070348
+20-496736164
 2291900752633
-View\DashBoard.xaml;View\MainWindow.xaml;View\Product\ProductUpdateForm.xaml;View\Product\ProductView.xaml;
+View\DashBoard.xaml;View\MainWindow.xaml;View\People\PeopleUpdateForm.xaml;View\People\PeopleView.xaml;View\Product\ProductUpdateForm.xaml;View\Product\ProductView.xaml;View\Role\RoleUpdateForm.xaml;View\Role\RoleView.xaml;
 
 False
 
