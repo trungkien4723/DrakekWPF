@@ -37,6 +37,7 @@ namespace drakek.ViewModel
                 PeopleEmail.Text = people.email;
                 PeoplePhone.Text = people.phone;
                 PeopleBirthday.SelectedDate = people.birthday;
+                PeoplePassword.Password = "";
             }
             Visibility = Visibility.Visible;
             peopleView.closePeoplePanel();

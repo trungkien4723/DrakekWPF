@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using drakek.Model;
 using drakek.Data;
 using Drakek.Controller;
+using System.Security.Cryptography;
 
 namespace drakek.Controller
 {
@@ -65,7 +66,7 @@ namespace drakek.Controller
                         people.phone = phone;
                         people.birthday = birthday;
                         if(!string.IsNullOrEmpty(password)){
-                            people.password = password;
+                            people.password = hashPassword(password);
                         }
                         context.SaveChanges();
                     }
@@ -78,7 +79,7 @@ namespace drakek.Controller
                                 email = email,
                                 phone = phone,
                                 birthday = birthday,
-                                password = !string.IsNullOrEmpty(password) ? password : "defaultpassword",
+                                password = !string.IsNullOrEmpty(password) ? hashPassword(password) : hashPassword("defaultpassword"),
                                 createdDate = DateTime.Now
                             };
 
@@ -117,13 +118,27 @@ namespace drakek.Controller
                 using (var context = new DrakekDB())
                 {
                     var People = context.people.Where(p => p.id == id).FirstOrDefault();
-                    People.password = password;
+                    People.password = hashPassword(password);
                     context.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private string hashPassword(string password)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
         }
     }

@@ -12,6 +12,7 @@ namespace drakek.ViewModel
     public partial class PeopleView: UserControl
     {
         private PeopleController peopleController = new PeopleController();
+        private RoleController roleController = new RoleController();
         public PeopleView()
         {
             InitializeComponent();
@@ -66,7 +67,7 @@ namespace drakek.ViewModel
                 index = i + 1,
                 people.id,
                 people.name,
-                people.role,
+                role = roleController.getRole(people.role).name,
                 people.email,
                 people.phone,
                 people.birthday,

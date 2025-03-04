@@ -39,11 +39,11 @@
                     Width="550">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No" Binding="{Binding index}" Width="50"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding name}" Width="200"/>
-                        <DataGridTextColumn Header="Role" Binding="{Binding role}" Width="100"/>
-                        <DataGridTextColumn Header="Email" Binding="{Binding email}" Width="100"/>
-                        <DataGridTextColumn Header="Phone" Binding="{Binding phone}" Width="100"/>
-                        <DataGridTextColumn Header="Created" Binding="{Binding createdDate}" Width="100"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding name}" Width="300"/>
+                        <DataGridTextColumn Header="Role" Binding="{Binding role}" Width="auto"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding email}" Width="auto"/>
+                        <DataGridTextColumn Header="Phone" Binding="{Binding phone}" Width="auto"/>
+                        <DataGridTextColumn Header="Created" Binding="{Binding createdDate}" Width="auto"/>
                         <DataGridTemplateColumn Header="Actions" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

@@ -52,7 +52,8 @@
                             <Label Grid.Column="0" Content="Role: " Margin="10, 0, 10, 0" VerticalAlignment="Center"/>
                             <ComboBox Grid.Column="1" x:Name="PeopleRole" Margin="0, 10, 0, 0" Width="300px"
                               ItemsSource="{Binding roles}"
-                              SelectedItem="{Binding selectedRole, Mode=TwoWay}">
+                              SelectedValue="{Binding selectedRole, Mode=TwoWay}"
+                              SelectedValuePath="id">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -102,7 +103,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="Birthday: " Margin="10, 0, 10, 0" VerticalAlignment="Center"/>
-                            <DatePicker Grid.Column="1" x:Name="PeopleBirthday" Margin="0, 10, 0, 0" Width="300px"/>
+                            <DatePicker Grid.Column="1" x:Name="PeopleBirthday" Margin="0, 10, 0, 0" Width="300px" SelectedDateFormat="short"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="5">
