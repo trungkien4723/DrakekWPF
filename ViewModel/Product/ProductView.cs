@@ -22,8 +22,7 @@ namespace drakek.ViewModel
         private void addProductButtonClick(object sender, RoutedEventArgs e)
         {
             ProductUpdateForm.id = "";
-            ProductViewPanel.Visibility = Visibility.Collapsed;
-            ProductUpdateForm.Visibility = Visibility.Visible;
+            ProductUpdateForm.showForm();
         }
 
         private void editProductButtonClick(object sender, RoutedEventArgs e)

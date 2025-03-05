@@ -23,8 +23,7 @@ namespace drakek.ViewModel
         private void addPeopleButtonClick(object sender, RoutedEventArgs e)
         {
             PeopleUpdateForm.id = "";
-            PeopleViewPanel.Visibility = Visibility.Collapsed;
-            PeopleUpdateForm.Visibility = Visibility.Visible;
+            PeopleUpdateForm.showForm();
         }
 
         private void editPeopleButtonClick(object sender, RoutedEventArgs e)

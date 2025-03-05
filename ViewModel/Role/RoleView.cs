@@ -22,8 +22,7 @@ namespace drakek.ViewModel
         private void addRoleButtonClick(object sender, RoutedEventArgs e)
         {
             RoleUpdateForm.id = "";
-            RoleViewPanel.Visibility = Visibility.Collapsed;
-            RoleUpdateForm.Visibility = Visibility.Visible;
+            RoleUpdateForm.showForm();
         }
 
         private void editRoleButtonClick(object sender, RoutedEventArgs e)
