@@ -70,7 +70,7 @@ namespace drakek.ViewModel
             RoleViewPanel.Visibility = Visibility.Visible;
         }
 
-        public void closeProductPanel()
+        public void closeRolePanel()
         {
             RoleViewPanel.Visibility = Visibility.Collapsed;
         }
