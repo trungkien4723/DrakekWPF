@@ -154,3 +154,6 @@ D:\1attime\Drakek\obj\Debug\net9.0-windows\refint\drakek.dll
 D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.pdb
 D:\1attime\Drakek\obj\Debug\net9.0-windows\drakek.genruntimeconfig.cache
 D:\1attime\Drakek\obj\Debug\net9.0-windows\ref\drakek.dll
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\LoginWindow.g.cs
+D:\1attime\Drakek\obj\Debug\net9.0-windows\View\LoginWindow.baml
+D:\1attime\Drakek\bin\Debug\net9.0-windows\CredentialManagement.dll

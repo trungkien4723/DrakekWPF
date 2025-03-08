@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "drakek/1.0.0": {
         "dependencies": {
+          "CredentialManagement": "1.0.2",
           "Microsoft.EntityFrameworkCore": "9.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.1",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.1"
@@ -48,6 +49,14 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.11.4.0",
             "fileVersion": "1.1100.424.31005"
+          }
+        }
+      },
+      "CredentialManagement/1.0.2": {
+        "runtime": {
+          "lib/net35/CredentialManagement.dll": {
+            "assemblyVersion": "1.0.2.0",
+            "fileVersion": "1.0.2.0"
           }
         }
       },
@@ -932,6 +941,13 @@
       "sha512": "sha512-Sf4BoE6Q3jTgFkgBkx7qztYOFELBCo+wQgpYDwal/qJ1unBH73ywPztIJKXBXORRzAeNijsuxhk94h0TIMvfYg==",
       "path": "azure.identity/1.11.4",
       "hashPath": "azure.identity.1.11.4.nupkg.sha512"
+    },
+    "CredentialManagement/1.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VkP04/jFXaxT3TkcRhzETYtOrznQxRmQ2J1XJdbXz47Bir7hIzPR7mFZk4GJQ4An4gozW+vonpf+iqTHomAkQw==",
+      "path": "credentialmanagement/1.0.2",
+      "hashPath": "credentialmanagement.1.0.2.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",

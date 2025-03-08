@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using drakek.Model;
 
 namespace drakek.ViewModel{
     /// <summary>
@@ -15,6 +16,7 @@ namespace drakek.ViewModel{
 /// </summary>
 public partial class MainWindow : Window
 {
+    public People user{get; set;}
     public MainWindow()
     {
         InitializeComponent();
@@ -39,7 +41,7 @@ public partial class MainWindow : Window
         }
     }
     private void Close_Click(object sender, RoutedEventArgs e){
-        this.Close();
+        Application.Current.Shutdown();
     }
 
     private void changeSelectedMenuPage(object sender, SelectionChangedEventArgs e){

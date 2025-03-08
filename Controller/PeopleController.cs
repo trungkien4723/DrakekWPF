@@ -52,6 +52,23 @@ namespace drakek.Controller
             return People;
         }
 
+        public People getPeopleByEmail(string email){
+            People People = new People();
+            try
+            {
+                using (var context = new DrakekDB())
+                {
+                    People = context.people.Where(p => p.email == email).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return People;
+        }
+
         public void updatePeople(string id, string name, string role, string email, string phone, DateTime birthday, string password = "")
         {   
             try
@@ -128,7 +145,7 @@ namespace drakek.Controller
             }
         }
 
-        private string hashPassword(string password)
+        public string hashPassword(string password)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {
