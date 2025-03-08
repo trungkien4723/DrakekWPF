@@ -21,6 +21,7 @@
                     Click="addProductButtonClick"/>
             </StackPanel>
             <Grid Grid.Row="1">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <DataGrid x:Name="ProductTable"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
@@ -33,7 +34,7 @@
                     SelectionMode="Single"
                     SelectionUnit="FullRow"
                     HorizontalAlignment="Left"
-                    Height="450"
+                    Height="Auto"
                     Margin="10, 10, 0, 0"
                     VerticalAlignment="Top"
                     Width="550">
@@ -53,6 +54,7 @@
                         </DataGridTemplateColumn>                  
                     </DataGrid.Columns>
                 </DataGrid>
+                </ScrollViewer>
             </Grid>
         </Grid>
         <local:ProductUpdateForm x:Name="ProductUpdateForm" Visibility="Collapsed"/>
