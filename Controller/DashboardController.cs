@@ -11,11 +11,11 @@ using System.Windows.Shapes;
 
 namespace drakek.Controller
 {
-    public partial class Dashboard : UserControl
+    public class DashboardController
     {
-        public Dashboard()
+        public void showDashboard()
         {
-            InitializeComponent();
+            // Code to show the dashboard
         }
     }
 }
