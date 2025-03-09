@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jIh1rBQx/7I=",
+  "dgSpecHash": "OQ1vOXXomTU=",
   "success": true,
-  "projectFilePath": "D:\\1attime\\Drakek\\drakek.csproj",
+  "projectFilePath": "D:\\1attime\\DrakekWPF\\drakek.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Lenovo\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
