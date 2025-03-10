@@ -18,6 +18,7 @@ namespace drakek.ViewModel
         public LoginWindow(){
             InitializeComponent();
             LoadCredentials();
+            ForgotPasswordForm.Visibility = Visibility.Collapsed;
         }
 
         private void LoadCredentials()
@@ -112,6 +113,21 @@ namespace drakek.ViewModel
             PasswordInput.Password = ShowedPasswordInput.Text;
             PasswordInput.Visibility = Visibility.Visible;
             ShowedPasswordInput.Visibility = Visibility.Hidden;
+        }
+
+        private void ForgotPassword_Click(object sender, RoutedEventArgs e){
+            ForgotPasswordForm.Visibility = Visibility.Visible;
+        }
+        private void CancelForgotPassword_Click(object sender, RoutedEventArgs e){
+            ForgotPasswordForm.Visibility = Visibility.Collapsed;
+        }
+
+        private void ResendPassword_Click(object sender, RoutedEventArgs e){
+            People forgotPasswordPeople = peopleController.getPeopleByEmail(ForgotPasswordEmailInput.Text);
+            if(forgotPasswordPeople != null){
+                peopleController.resendForgotPassword(forgotPasswordPeople.email);
+            }
+            else MessageBox.Show("User not found", "Error", MessageBoxButton.OK);
         }
     }
 }

@@ -151,5 +151,27 @@ namespace drakek.Controller
                 return builder.ToString();
             }
         }
+
+        public void resendForgotPassword(string email)
+        {
+            // Check if the email exists in the database
+            PeopleController peopleController = new PeopleController();
+            People user = peopleController.getPeopleByEmail(email);
+
+            if (user == null)
+            {
+                MessageBox.Show("Email not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string tempPassword = supportFunctions.generateID("",8);
+            changePassword(user.id, tempPassword);
+
+            string subject = "Password Reset";
+            string body = $"Your temporary password is: {tempPassword}";
+            supportFunctions.SendEmail(email, subject, body);
+
+            MessageBox.Show("A temporary password has been sent to your email.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

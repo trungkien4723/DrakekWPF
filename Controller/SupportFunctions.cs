@@ -7,6 +7,8 @@ using System.Windows.Input;
 using System.Windows;
 using System.Text.RegularExpressions;
 using drakek.Controller;
+using System.Net;
+using System.Net.Mail;
 
 namespace Drakek.Controller
 {
@@ -52,6 +54,39 @@ namespace Drakek.Controller
         public string generateID(string prefix, int length)
         {
             return prefix + Guid.NewGuid().ToString("N").Substring(0, length);
+        }
+
+        public void SendEmail(string toEmail, string subject, string body)
+        {
+            try
+            {
+                var fromAddress = new MailAddress("ntrungkien4723@gmail.com", "DRAKEK");
+                var toAddress = new MailAddress(toEmail);
+                const string fromPassword = "sjncrtsdztbegxzd";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to send email: {ex.Message}");
+            }
         }
     }
 }
