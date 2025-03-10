@@ -57,6 +57,8 @@ namespace drakek.ViewModel
         }
 
         public void LoginButton_Click(object sender, RoutedEventArgs e){
+            if(ShowPasswordCheckBox.IsChecked == true){PasswordInput.Password = ShowedPasswordInput.Text;}
+            else{ShowedPasswordInput.Text = PasswordInput.Password;}
             var username = UsernameInput.Text;
             var password = PasswordInput.Password;
             loginProcess(username, password);
@@ -96,6 +98,20 @@ namespace drakek.ViewModel
             }else{
                 MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowedPasswordInput.Text = PasswordInput.Password;
+            PasswordInput.Visibility = Visibility.Hidden;
+            ShowedPasswordInput.Visibility = Visibility.Visible;
+        }
+
+        private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            PasswordInput.Password = ShowedPasswordInput.Text;
+            PasswordInput.Visibility = Visibility.Visible;
+            ShowedPasswordInput.Visibility = Visibility.Hidden;
         }
     }
 }

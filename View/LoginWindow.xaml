@@ -24,7 +24,11 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="DRAKEK" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
                 <TextBox x:Name="UsernameInput" Width="200" Height="30" Margin="0,0,0,10"/>
-                <PasswordBox x:Name="PasswordInput" Width="200" Height="30" Margin="0,0,0,20"/>
+                <Grid Width="200" Height="30" Margin="0,0,0,20">
+                    <PasswordBox x:Name="PasswordInput" Width="200" Height="auto"/>
+                    <TextBox x:Name="ShowedPasswordInput" Width="200" Height="auto" Visibility="Hidden"/>
+                <CheckBox x:Name="ShowPasswordCheckBox" HorizontalAlignment="Right" Margin="0,0,-20,-20" Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked"/>
+                </Grid>
                 <CheckBox x:Name="RememberMeCheckBox" Content="Remember Me" Margin="0,0,0,20"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Login" Width="80" Margin="5" Click="LoginButton_Click"/>
