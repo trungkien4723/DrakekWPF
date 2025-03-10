@@ -87,7 +87,12 @@ namespace drakek.ViewModel{
         private void AccountOptions_Click(object sender, RoutedEventArgs e){
             ProfileImage.ContextMenu.IsOpen = true;
         }
-        private void ViewProfile_Click(object sender, RoutedEventArgs e){}
+        private void ViewProfile_Click(object sender, RoutedEventArgs e){
+            PeopleView peopleView = new PeopleView();
+            renderPages.Children.Clear();
+            renderPages.Children.Add(peopleView);
+            peopleView.showUpdatePeopleForm(currentUser.id);
+        }
         private void Settings_Click(object sender, RoutedEventArgs e){}
         private void Logout_Click(object sender, RoutedEventArgs e){
             using (var cred = new Credential()){
@@ -101,28 +106,30 @@ namespace drakek.ViewModel{
         private void changeSelectedMenuPage(object sender, SelectionChangedEventArgs e){
             if (mainMenu.SelectedItem is ListViewItem selectedItem)
                 {
-                    renderPages.Children.Clear();
-                    switch (selectedItem.Name.ToString())
-                    {
-                        case "menuDashboard":
-                            renderPages.Children.Add(new DashboardView());
-                        break;
-                        case "menuProduct":
-                            renderPages.Children.Add(new ProductView());
-                        break;
-                        case "menuPeople":
-                            renderPages.Children.Add(new PeopleView());
-                        break;
-                        case "menuRole":
-                            renderPages.Children.Add(new RoleView());
-                        break;
-                        default:
-                            renderPages.Children.Add(new DashboardView());
-                        break; 
-                    }
+                    changePage(selectedItem.Name.ToString());
                 }
         }
-
+        public void changePage(string pageName){
+            renderPages.Children.Clear();
+            switch (pageName)
+            {
+                case "menuDashboard":
+                    renderPages.Children.Add(new DashboardView());
+                break;
+                case "menuProduct":
+                    renderPages.Children.Add(new ProductView());
+                break;
+                case "menuPeople":
+                    renderPages.Children.Add(new PeopleView());
+                break;
+                case "menuRole":
+                    renderPages.Children.Add(new RoleView());
+                break;
+                default:
+                    renderPages.Children.Add(new DashboardView());
+                break; 
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

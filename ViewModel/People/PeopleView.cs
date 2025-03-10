@@ -22,8 +22,7 @@ namespace drakek.ViewModel
 
         private void addPeopleButtonClick(object sender, RoutedEventArgs e)
         {
-            PeopleUpdateForm.id = "";
-            PeopleUpdateForm.showForm();
+            showUpdatePeopleForm("");
         }
 
         private void editPeopleButtonClick(object sender, RoutedEventArgs e)
@@ -36,8 +35,7 @@ namespace drakek.ViewModel
                 return;
             }
 
-            PeopleUpdateForm.id = people.id;
-            PeopleUpdateForm.showForm();
+            showUpdatePeopleForm(people.id);
         }
 
         private void deletePeopleButtonClick(object sender, RoutedEventArgs e)
@@ -80,6 +78,11 @@ namespace drakek.ViewModel
         public void closePeoplePanel()
         {
             PeopleViewPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public void showUpdatePeopleForm(string updatePeopleId){
+            PeopleUpdateForm.id = updatePeopleId;
+            PeopleUpdateForm.showForm();
         }
     }
 }
