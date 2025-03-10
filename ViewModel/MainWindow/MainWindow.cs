@@ -28,7 +28,19 @@ namespace drakek.ViewModel{
                     CurrentUser = value;
                     OnPropertyChanged();
                     LoadProfileImage();
+                    OnPropertyChanged(nameof(currentUserFirstName));
                 }
+            }
+        }
+        public string currentUserFirstName
+        {
+            get
+            {
+                if (CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.name))
+                {
+                    return CurrentUser.name.Split(' ')[0];
+                }
+                return string.Empty;
             }
         }
         public MainWindow(People user)

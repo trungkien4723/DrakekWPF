@@ -30,7 +30,7 @@
                         </ContextMenu>
                     </Image.ContextMenu>
                 </Image>
-                <Label Content="{Binding currentUser.name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Padding="10"/>
+                <TextBlock Text='{Binding currentUserFirstName}' HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Padding="10" TextTrimming="CharacterEllipsis" Width="100" ToolTip="{Binding currentUser.name}"/>
             </StackPanel>
             <ListView Grid.Row="1" x:Name="mainMenu" HorizontalAlignment="Left" Height="450" Padding="10" VerticalAlignment="Top" Width="200" Background="Transparent" SelectionChanged="changeSelectedMenuPage">
                 <ListViewItem Content="Dashboard" Name="menuDashboard"/>
