@@ -12,6 +12,7 @@ using drakek.Model;
 using drakek.Data;
 using Drakek.Controller;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace drakek.Controller
 {
@@ -19,12 +20,12 @@ namespace drakek.Controller
     {
         SupportFunctions supportFunctions = new SupportFunctions();
         public List<People> getAllPeople(){
-            var PeoplesData = new List<People>();
+            var PeopleData = new List<People>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    PeoplesData = context.people.ToList();
+                    PeopleData = context.people.ToList();
                 }
             }
             catch (Exception ex)
@@ -32,7 +33,7 @@ namespace drakek.Controller
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            return PeoplesData;
+            return PeopleData;
         }
 
         public People getPeople(string id){
@@ -69,39 +70,31 @@ namespace drakek.Controller
             return People;
         }
 
-        public void updatePeople(string id, string name, string role, string email, string phone, DateTime birthday, string password = "")
+        public void updatePeople(People peopleToUpdate)
         {   
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    if(!string.IsNullOrEmpty(id)){
-                        var people = context.people.Where(p => p.id == id).FirstOrDefault();
-                        people.name = name;
-                        people.role = role;
-                        people.email = email;
-                        people.phone = phone;
-                        people.birthday = birthday;
-                        if(!string.IsNullOrEmpty(password)){
-                            people.password = hashPassword(password);
+                    if(!string.IsNullOrEmpty(peopleToUpdate.id)){
+                        var people = context.people.Where(p => p.id == peopleToUpdate.id).FirstOrDefault();
+                        if(!string.IsNullOrEmpty(peopleToUpdate.name)) people.name = peopleToUpdate.name;
+                        if(!string.IsNullOrEmpty(peopleToUpdate.role)) people.role = peopleToUpdate.role;
+                        if(!string.IsNullOrEmpty(peopleToUpdate.email)) people.email = peopleToUpdate.email;
+                        if(!string.IsNullOrEmpty(peopleToUpdate.phone)) people.phone = peopleToUpdate.phone;
+                        if(peopleToUpdate.birthday != null) people.birthday = peopleToUpdate.birthday;
+                        if(!string.IsNullOrEmpty(peopleToUpdate.password)){
+                            people.password = hashPassword(peopleToUpdate.password);
                         }
+                        if(!string.IsNullOrEmpty(peopleToUpdate.image)) people.image = peopleToUpdate.image;
                         context.SaveChanges();
                     }
                     else{
-                            People newPeople = new People
-                            {
-                                id = supportFunctions.generateID("ppl", 5),
-                                name = name,
-                                role = role,
-                                email = email,
-                                phone = phone,
-                                birthday = birthday,
-                                password = !string.IsNullOrEmpty(password) ? hashPassword(password) : hashPassword("defaultpassword"),
-                                createdDate = DateTime.Now
-                            };
-
-                            context.people.Add(newPeople);
-                            context.SaveChanges();
+                        peopleToUpdate.id = supportFunctions.generateID("ppl", 5);
+                        peopleToUpdate.password = !string.IsNullOrEmpty(peopleToUpdate.password) ? hashPassword(peopleToUpdate.password) : hashPassword("defaultpassword");
+                        peopleToUpdate.createdDate = DateTime.Now;
+                        context.people.Add(peopleToUpdate);
+                        context.SaveChanges();
                     }
                 }
             }

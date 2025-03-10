@@ -4738,11 +4738,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\1attime\\Drakek\\drakek.csproj",
+      "projectUniqueName": "D:\\1attime\\DrakekWPF\\drakek.csproj",
       "projectName": "drakek",
-      "projectPath": "D:\\1attime\\Drakek\\drakek.csproj",
+      "projectPath": "D:\\1attime\\DrakekWPF\\drakek.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "D:\\1attime\\Drakek\\obj\\",
+      "outputPath": "D:\\1attime\\DrakekWPF\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using drakek.Controller;
 using drakek.Model;
 using CredentialManagement;
+using System.Windows.Media.Imaging;
 
 namespace drakek.ViewModel
 {
@@ -21,6 +22,7 @@ namespace drakek.ViewModel
 
         private void LoadCredentials()
         {
+            RememberMeCheckBox.IsChecked = true;
             using (var cred = new Credential())
             {
                 cred.Target = "DrakekApp";
@@ -28,7 +30,7 @@ namespace drakek.ViewModel
                 {
                     UsernameInput.Text = cred.Username;
                     PasswordInput.Password = cred.Password;
-                    RememberMeCheckBox.IsChecked = true;
+                    loginProcess(cred.Username, cred.Password);
                 }
             }
         }
@@ -57,21 +59,7 @@ namespace drakek.ViewModel
         public void LoginButton_Click(object sender, RoutedEventArgs e){
             var username = UsernameInput.Text;
             var password = PasswordInput.Password;
-            People user = peopleController.getPeopleByEmail(username);
-            if(user == null){
-                MessageBox.Show("Username not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if(peopleController.hashPassword(password) == user.password){
-                SaveCredentials();
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                mainWindow.user = user;
-                this.Close();
-            }else{
-                MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            loginProcess(username, password);
         }
 
         private void Drag_Window(object sender, MouseButtonEventArgs e){
@@ -91,6 +79,23 @@ namespace drakek.ViewModel
         }
         private void Close_Click(object sender, RoutedEventArgs e){
             Application.Current.Shutdown();
+        }
+
+        private void loginProcess(string username, string password){
+            People user = peopleController.getPeopleByEmail(username);
+            if(user == null){
+                MessageBox.Show("Username not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if(peopleController.hashPassword(password) == user.password){
+                SaveCredentials();
+                MainWindow mainWindow = new MainWindow(user);
+                mainWindow.Show();
+                this.Close();
+            }else{
+                MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

@@ -20,7 +20,7 @@
                 <Button Content="Close" Click="Close_Click" Cursor="Hand" Margin="0, 0, 10, 0"/>
             </StackPanel>
         </Border>
-        <Border Grid.Row="1" Background="LightGray" Padding="20">
+        <Border Grid.Row="1" Background="LightGray" CornerRadius="0, 0, 10, 10" Padding="20">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="DRAKEK" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
                 <TextBox x:Name="UsernameInput" Width="200" Height="30" Margin="0,0,0,10"/>

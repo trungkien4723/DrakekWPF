@@ -70,7 +70,8 @@ namespace drakek.ViewModel
                 people.email,
                 people.phone,
                 birthday = people.birthday.ToString("d"),
-                people.createdDate
+                people.createdDate,
+                people.image
             }).ToList();
             PeopleTable.ItemsSource = allPeopleData;
             PeopleViewPanel.Visibility = Visibility.Visible;

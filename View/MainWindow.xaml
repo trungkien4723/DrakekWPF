@@ -17,10 +17,21 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Background="gray">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50px"/>
+                <RowDefinition Height="80px"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Content="Main Menu" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="10"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Name="ProfileImage" MaxHeight="50" MaxWidth="50" Margin="10" Stretch="Fill" MouseLeftButtonDown="AccountOptions_Click">
+                    <Image.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="View Profile" Click="ViewProfile_Click"/>
+                            <MenuItem Header="Settings" Click="Settings_Click"/>
+                            <MenuItem Header="Logout" Click="Logout_Click"/>
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                </Image>
+                <Label Content="{Binding currentUser.name}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Padding="10"/>
+            </StackPanel>
             <ListView Grid.Row="1" x:Name="mainMenu" HorizontalAlignment="Left" Height="450" Padding="10" VerticalAlignment="Top" Width="200" Background="Transparent" SelectionChanged="changeSelectedMenuPage">
                 <ListViewItem Content="Dashboard" Name="menuDashboard"/>
                 <ListViewItem Content="Product" Name="menuProduct"/>
@@ -30,7 +41,6 @@
                 <ListViewItem Content="Coupon" Name="menuCoupon"/>
                 <ListViewItem Content="Role" Name="menuRole"/>
                 <ListViewItem Content="Permission" Name="menuPermission"/>
-                <ListViewItem Content="Setting" Name="menuSetting"/>
             </ListView>
         </Grid>
         <Grid Grid.Column="1" Background="lightgray">

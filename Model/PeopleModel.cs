@@ -10,5 +10,6 @@ namespace drakek.Model
         public string password { get; set; }
         public DateTime birthday { get; set; }
         public DateTime createdDate { get; set; }
+        public string? image { get; set; }
     }
 }

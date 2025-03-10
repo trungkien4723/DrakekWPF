@@ -60,13 +60,17 @@ namespace drakek.ViewModel
 
         private void savePeopleButtonClick(object sender, RoutedEventArgs e)
         {
-            string name = PeopleName.Text;
-            string role = selectedRole;
-            string email = PeopleEmail.Text;
-            string phone = PeoplePhone.Text;
-            DateTime birthday = PeopleBirthday.SelectedDate.Value;
-            string password = PeoplePassword.Password;
-            peopleController.updatePeople(id, name, role, email, phone, birthday, password);
+            People peopleToUpdate = new People(){
+                id = id,
+                name = PeopleName.Text,
+                role = selectedRole,
+                email = PeopleEmail.Text,
+                phone = PeoplePhone.Text,
+                birthday = PeopleBirthday.SelectedDate.Value,
+                password = PeoplePassword.Password,
+                image = ""
+            };
+            peopleController.updatePeople(peopleToUpdate);
             closeForm();
         }
 
