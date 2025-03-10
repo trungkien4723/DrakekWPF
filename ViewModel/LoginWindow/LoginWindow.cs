@@ -8,6 +8,7 @@ using System.Windows.Input;
 using drakek.Controller;
 using drakek.Model;
 using CredentialManagement;
+using System.Windows.Media.Imaging;
 
 namespace drakek.ViewModel
 {
@@ -21,6 +22,7 @@ namespace drakek.ViewModel
 
         private void LoadCredentials()
         {
+            RememberMeCheckBox.IsChecked = true;
             using (var cred = new Credential())
             {
                 cred.Target = "DrakekApp";
@@ -28,7 +30,6 @@ namespace drakek.ViewModel
                 {
                     UsernameInput.Text = cred.Username;
                     PasswordInput.Password = cred.Password;
-                    RememberMeCheckBox.IsChecked = true;
                     loginProcess(cred.Username, cred.Password);
                 }
             }
@@ -89,9 +90,8 @@ namespace drakek.ViewModel
 
             if(peopleController.hashPassword(password) == user.password){
                 SaveCredentials();
-                MainWindow mainWindow = new MainWindow();
+                MainWindow mainWindow = new MainWindow(user);
                 mainWindow.Show();
-                mainWindow.user = user;
                 this.Close();
             }else{
                 MessageBox.Show("Username or password is incorrect", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
