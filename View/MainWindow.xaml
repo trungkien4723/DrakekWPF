@@ -20,8 +20,8 @@
                 <RowDefinition Height="80px"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Image Name="ProfileImage" MaxHeight="50" MaxWidth="50" Margin="10" Stretch="Fill" MouseLeftButtonDown="AccountOptions_Click">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" MouseLeftButtonDown="AccountOptions_Click">
+                <Image Name="ProfileImage" MaxHeight="50" MaxWidth="50" Margin="10" Stretch="Fill">
                     <Image.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="View Profile" Click="ViewProfile_Click"/>
@@ -55,7 +55,9 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <StackPanel Orientation="Horizontal" Margin="5, 20, 0, 0" x:Name="renderPages"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Horizontal" Margin="5, 20, 5, 10" x:Name="renderPages"/>
+                    </ScrollViewer>
                 </Grid>
         </Grid>
     </Grid>

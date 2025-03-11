@@ -8,6 +8,9 @@ using System.Windows;
 using drakek.Model;
 using Drakek.Controller;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using System.IO;
 
 namespace drakek.ViewModel
 {
@@ -16,6 +19,8 @@ namespace drakek.ViewModel
         public string id{get; set;}
         public List<Role> roles{get; set;}
         public string selectedRole{get; set;} 
+        private string newProfilePictureSourcePath;
+        private string profilePictureDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images/ProfilePictures");
 
         private PeopleController peopleController = new PeopleController();
         private SupportFunctions supportFunctions = new SupportFunctions();
@@ -29,8 +34,14 @@ namespace drakek.ViewModel
         }
 
         public void showForm(){
-            
             People people = peopleController.getPeople(id);
+            try{
+                Uri profileImageUri = new Uri(File.Exists(people.image) ? 
+                    people.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
+                BitmapImage profileImage = new BitmapImage(profileImageUri);
+                ProfileImage.Source = profileImage;
+            }catch (Exception ex){}
+
             if(people != null){
                 PeopleName.Text = people.name;
                 PeopleRole.SelectedValue = people.role;
@@ -58,8 +69,11 @@ namespace drakek.ViewModel
                 PeoplePassword.Password = "";
         }
 
-        private void savePeopleButtonClick(object sender, RoutedEventArgs e)
+        private void savePeopleButton_Click(object sender, RoutedEventArgs e)
         {
+            string targetFilePath = Path.Combine(profilePictureDirectory, Path.GetFileName(newProfilePictureSourcePath));
+            if (!Directory.Exists(profilePictureDirectory)) Directory.CreateDirectory(profilePictureDirectory);
+            if(File.Exists(newProfilePictureSourcePath)) File.Copy(newProfilePictureSourcePath, targetFilePath, true);
             People peopleToUpdate = new People(){
                 id = id,
                 name = PeopleName.Text,
@@ -68,15 +82,35 @@ namespace drakek.ViewModel
                 phone = PeoplePhone.Text,
                 birthday = PeopleBirthday.SelectedDate.Value,
                 password = PeoplePassword.Password,
-                image = ""
+                image = ProfileImage.Source != null ? targetFilePath : ""
             };
             peopleController.updatePeople(peopleToUpdate);
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
+            if (mainWindow != null){
+                mainWindow = new MainWindow(mainWindow.currentUser);
+            }
             closeForm();
         }
 
-        private void cancelUpdatePeopleButtonClick(object sender, RoutedEventArgs e)
+        private void cancelUpdatePeopleButton_Click(object sender, RoutedEventArgs e)
         {
             closeForm();
+        }
+
+        private void profileImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                newProfilePictureSourcePath = openFileDialog.FileName;
+                MessageBox.Show(newProfilePictureSourcePath);
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(newProfilePictureSourcePath);
+                bitmap.EndInit();
+                ProfileImage.Source = bitmap;
+            }
         }
 
         private void numberInputOnlyTextbox(object sender, TextCompositionEventArgs e)

@@ -26,10 +26,10 @@ namespace drakek.ViewModel{
             set {
                 if(CurrentUser != value){
                     CurrentUser = value;
-                    OnPropertyChanged();
-                    LoadProfileImage();
+                    OnPropertyChanged(nameof(currentUser));
                     OnPropertyChanged(nameof(currentUserFirstName));
                 }
+                LoadProfileImage();
             }
         }
         public string currentUserFirstName
@@ -49,19 +49,15 @@ namespace drakek.ViewModel{
             DataContext = this;
             currentUser = user;
         }
-        private void LoadProfileImage()
+        public void LoadProfileImage()
         {
             try
             {
-                Uri profileImageUri = new Uri(!string.IsNullOrEmpty(currentUser.image) ? 
+                Uri profileImageUri = new Uri(File.Exists(currentUser.image) ? 
                     currentUser.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
                 BitmapImage profileImage = new BitmapImage(profileImageUri);
                 ProfileImage.Source = profileImage;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load profile image: {ex.Message}");
-            }
+            }catch (Exception ex){}
         }
         private void Window_Loaded(object sender, RoutedEventArgs e){
             renderPages.Children.Clear();
@@ -105,9 +101,9 @@ namespace drakek.ViewModel{
         }
         private void changeSelectedMenuPage(object sender, SelectionChangedEventArgs e){
             if (mainMenu.SelectedItem is ListViewItem selectedItem)
-                {
-                    changePage(selectedItem.Name.ToString());
-                }
+            {
+                changePage(selectedItem.Name.ToString());
+            }
         }
         public void changePage(string pageName){
             renderPages.Children.Clear();
