@@ -38,9 +38,9 @@
                 <ListViewItem Content="People" Name="menuPeople"/>
                 <ListViewItem Content="Customer" Name="menuCustomer"/>
                 <ListViewItem Content="Order" Name="menuPOrder"/>
+                <ListViewItem Content="Storage" Name="menuStorage"/>
                 <ListViewItem Content="Coupon" Name="menuCoupon"/>
                 <ListViewItem Content="Role" Name="menuRole"/>
-                <ListViewItem Content="Permission" Name="menuPermission"/>
             </ListView>
         </Grid>
         <Grid Grid.Column="1" Background="lightgray">

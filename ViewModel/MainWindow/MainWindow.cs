@@ -121,6 +121,9 @@ namespace drakek.ViewModel{
                 case "menuRole":
                     renderPages.Children.Add(new RoleView());
                 break;
+                case "menuStorage":
+                    renderPages.Children.Add(new StorageView());
+                break;
                 default:
                     renderPages.Children.Add(new DashboardView());
                 break; 
