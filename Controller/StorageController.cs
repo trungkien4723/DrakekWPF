@@ -64,6 +64,7 @@ namespace drakek.Controller
                         context.SaveChanges();
                     }
                     else{
+                        storageToUpdate.id = supportFunctions.generateID("strg", 5);
                         context.storage.Add(storageToUpdate);
                         context.SaveChanges();
                     }
