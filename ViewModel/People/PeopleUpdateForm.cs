@@ -17,6 +17,7 @@ namespace drakek.ViewModel
     public partial class PeopleUpdateForm: UserControl
     {
         public string id{get; set;}
+        private People peopleToUpdate = new People();
         public List<Role> roles{get; set;}
         public string selectedRole{get; set;} 
         private string newProfilePictureSourcePath;
@@ -34,22 +35,22 @@ namespace drakek.ViewModel
         }
 
         public void showForm(){
-            People people = peopleController.getPeople(id);
+            peopleToUpdate = peopleController.getPeople(id);
+            if(peopleToUpdate != null){
+                PeopleName.Text = peopleToUpdate.name;
+                PeopleRole.SelectedValue = peopleToUpdate.role;
+                PeopleEmail.Text = peopleToUpdate.email;
+                PeoplePhone.Text = peopleToUpdate.phone;
+                PeopleBirthday.SelectedDate = peopleToUpdate.birthday;
+                PeoplePassword.Password = "";
+            }    
             try{
-                Uri profileImageUri = new Uri(File.Exists(people.image) ? 
-                    people.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
+                Uri profileImageUri = new Uri(!string.IsNullOrEmpty(peopleToUpdate.image) && File.Exists(peopleToUpdate.image) ? 
+                    peopleToUpdate.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
                 BitmapImage profileImage = new BitmapImage(profileImageUri);
                 ProfileImage.Source = profileImage;
-            }catch (Exception ex){}
-
-            if(people != null){
-                PeopleName.Text = people.name;
-                PeopleRole.SelectedValue = people.role;
-                PeopleEmail.Text = people.email;
-                PeoplePhone.Text = people.phone;
-                PeopleBirthday.SelectedDate = people.birthday;
-                PeoplePassword.Password = "";
-            }
+            }catch (Exception ex){MessageBox.Show(ex.Message);}
+            
             Visibility = Visibility.Visible;
             peopleView.closePeoplePanel();
         }
@@ -71,25 +72,43 @@ namespace drakek.ViewModel
 
         private void savePeopleButton_Click(object sender, RoutedEventArgs e)
         {
-            string targetFilePath = Path.Combine(profilePictureDirectory, Path.GetFileName(newProfilePictureSourcePath));
-            if (!Directory.Exists(profilePictureDirectory)) Directory.CreateDirectory(profilePictureDirectory);
-            if(File.Exists(newProfilePictureSourcePath)) File.Copy(newProfilePictureSourcePath, targetFilePath, true);
-            People peopleToUpdate = new People(){
-                id = id,
-                name = PeopleName.Text,
-                role = selectedRole,
-                email = PeopleEmail.Text,
-                phone = PeoplePhone.Text,
-                birthday = PeopleBirthday.SelectedDate.Value,
-                password = PeoplePassword.Password,
-                image = ProfileImage.Source != null ? targetFilePath : ""
-            };
-            peopleController.updatePeople(peopleToUpdate);
-            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
-            if (mainWindow != null){
-                mainWindow = new MainWindow(mainWindow.currentUser);
+            string targetFilePath = peopleToUpdate.image;
+            try
+            {
+                if(newProfilePictureSourcePath != null){
+                    targetFilePath = Path.Combine(profilePictureDirectory, Path.GetFileName(newProfilePictureSourcePath));
+                    if (!Directory.Exists(profilePictureDirectory)) Directory.CreateDirectory(profilePictureDirectory);
+                    if (!string.IsNullOrEmpty(newProfilePictureSourcePath) && File.Exists(newProfilePictureSourcePath)){
+                        using (FileStream sourceStream = new FileStream(newProfilePictureSourcePath, FileMode.Open, FileAccess.Read, FileShare.Read)){
+                            using (FileStream targetStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write, FileShare.None)){
+                                sourceStream.CopyTo(targetStream);
+                            }
+                        }
+                    }
+                }
+                
+                peopleToUpdate.id = id;
+                peopleToUpdate.name = PeopleName.Text;
+                peopleToUpdate.role = selectedRole;
+                peopleToUpdate.email = PeopleEmail.Text;
+                peopleToUpdate.phone = PeoplePhone.Text;
+                peopleToUpdate.birthday = PeopleBirthday.SelectedDate.Value;
+                peopleToUpdate.password = PeoplePassword.Password;
+                peopleToUpdate.image = targetFilePath;
+
+                peopleController.updatePeople(peopleToUpdate);
+                MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
+                if (mainWindow != null)
+                {
+                    mainWindow = new MainWindow(mainWindow.currentUser);
+                }
+
+                closeForm();
             }
-            closeForm();
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save profile picture: {ex.Message}");
+            }
         }
 
         private void cancelUpdatePeopleButton_Click(object sender, RoutedEventArgs e)
@@ -104,12 +123,14 @@ namespace drakek.ViewModel
             if (openFileDialog.ShowDialog() == true)
             {
                 newProfilePictureSourcePath = openFileDialog.FileName;
-                MessageBox.Show(newProfilePictureSourcePath);
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(newProfilePictureSourcePath);
-                bitmap.EndInit();
-                ProfileImage.Source = bitmap;
+                using (FileStream stream = new FileStream(newProfilePictureSourcePath, FileMode.Open, FileAccess.Read)){
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                    ProfileImage.Source = bitmap;
+                }
             }
         }
 

@@ -42,7 +42,8 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    People = context.people.Where(p => p.id == id).FirstOrDefault();
+                    People getPeople = context.people.Where(p => p.id == id).FirstOrDefault();
+                    if(getPeople != null) People = getPeople;
                 }
             }
             catch (Exception ex)

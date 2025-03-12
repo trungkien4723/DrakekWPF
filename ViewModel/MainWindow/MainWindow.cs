@@ -28,8 +28,8 @@ namespace drakek.ViewModel{
                     CurrentUser = value;
                     OnPropertyChanged(nameof(currentUser));
                     OnPropertyChanged(nameof(currentUserFirstName));
+                    LoadProfileImage();
                 }
-                LoadProfileImage();
             }
         }
         public string currentUserFirstName
