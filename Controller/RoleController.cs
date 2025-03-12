@@ -45,9 +45,10 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    role = context.role.Where(r => r.id == id).FirstOrDefault();
-                    if(role != null && role.permission == null){
-                        role.permission = "No Permission";
+                    Role getrole = context.role.Where(r => r.id == id).FirstOrDefault();
+                    if(getrole != null && getrole.permission == null){
+                        getrole.permission = "No Permission";
+                        role = getrole;
                     }
                 }
             }
