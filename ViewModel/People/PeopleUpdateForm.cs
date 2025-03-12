@@ -75,7 +75,7 @@ namespace drakek.ViewModel
             string targetFilePath = peopleToUpdate.image;
             try
             {
-                if(newProfilePictureSourcePath != null){
+                if(!string.IsNullOrEmpty(newProfilePictureSourcePath)){
                     targetFilePath = Path.Combine(profilePictureDirectory, Path.GetFileName(newProfilePictureSourcePath));
                     if (!Directory.Exists(profilePictureDirectory)) Directory.CreateDirectory(profilePictureDirectory);
                     if (!string.IsNullOrEmpty(newProfilePictureSourcePath) && File.Exists(newProfilePictureSourcePath)){
@@ -96,11 +96,12 @@ namespace drakek.ViewModel
                 peopleToUpdate.password = PeoplePassword.Password;
                 peopleToUpdate.image = targetFilePath;
 
+                newProfilePictureSourcePath = "";
                 peopleController.updatePeople(peopleToUpdate);
+
                 MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
-                if (mainWindow != null)
-                {
-                    mainWindow = new MainWindow(mainWindow.currentUser);
+                if(peopleToUpdate.id == mainWindow.currentUser.id){
+                    mainWindow = new MainWindow(peopleToUpdate);
                 }
 
                 closeForm();

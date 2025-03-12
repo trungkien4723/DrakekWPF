@@ -46,8 +46,8 @@ namespace drakek.ViewModel{
         public MainWindow(People user)
         {
             InitializeComponent();
-            DataContext = this;
             currentUser = user;
+            DataContext = this;
         }
         public void LoadProfileImage()
         {
