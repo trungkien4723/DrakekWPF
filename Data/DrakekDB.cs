@@ -10,6 +10,7 @@ namespace drakek.Data
         public DbSet<Role> role { get; set; }
         public DbSet<Permission> permission { get; set; }
         public DbSet<Storage> storage { get; set; }
+        public DbSet<Stock> stock { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

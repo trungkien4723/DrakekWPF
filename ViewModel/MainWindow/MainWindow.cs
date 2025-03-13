@@ -124,6 +124,9 @@ namespace drakek.ViewModel{
                 case "menuStorage":
                     renderPages.Children.Add(new StorageView());
                 break;
+                case "menuStock":
+                    renderPages.Children.Add(new StockView());
+                break;
                 default:
                     renderPages.Children.Add(new DashboardView());
                 break; 

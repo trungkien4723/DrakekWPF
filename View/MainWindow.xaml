@@ -41,6 +41,7 @@
                 <ListViewItem Content="Storage" Name="menuStorage"/>
                 <ListViewItem Content="Coupon" Name="menuCoupon"/>
                 <ListViewItem Content="Role" Name="menuRole"/>
+                <ListViewItem Content="Stock" Name="menuStock"/>
             </ListView>
         </Grid>
         <Grid Grid.Column="1" Background="lightgray">
