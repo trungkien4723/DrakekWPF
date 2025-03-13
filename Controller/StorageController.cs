@@ -65,6 +65,7 @@ namespace drakek.Controller
                     }
                     else{
                         storageToUpdate.id = supportFunctions.generateID("strg", 5);
+                        storageToUpdate.createdDate = DateTime.Now;
                         context.storage.Add(storageToUpdate);
                         context.SaveChanges();
                     }

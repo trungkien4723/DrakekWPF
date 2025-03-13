@@ -77,7 +77,8 @@ namespace drakek.Controller
                             {
                                 id = supportFunctions.generateID("role", 5),
                                 name = name,
-                                permission = string.Join(",", permissionIds)
+                                permission = string.Join(",", permissionIds),
+                                createdDate = DateTime.Now
                             };
 
                             context.role.Add(newRole);

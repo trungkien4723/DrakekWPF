@@ -68,7 +68,8 @@ namespace drakek.Controller
                             {
                                 id = supportFunctions.generateID("prdct", 5),
                                 name = name,
-                                price = price
+                                price = price,
+                                createdDate = DateTime.Now
                             };
 
                             context.product.Add(newProduct);
