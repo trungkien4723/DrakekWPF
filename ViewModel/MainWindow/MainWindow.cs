@@ -130,6 +130,9 @@ namespace drakek.ViewModel{
                 case "menuCustomer":
                     renderPages.Children.Add(new CustomerView());
                 break;
+                case "menuCoupon":
+                    renderPages.Children.Add(new CouponView());
+                break;
                 default:
                     renderPages.Children.Add(new DashboardView());
                 break; 

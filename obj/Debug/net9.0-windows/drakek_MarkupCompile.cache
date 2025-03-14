@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
 D:\1attime\DrakekWPF\App.xaml
-91452083506
+16-399864521
 
-22351847637
+37-266320530
 230-750840745
-View\DashBoard.xaml;View\LoginWindow.xaml;View\MainWindow.xaml;View\People\PeopleUpdateForm.xaml;View\People\PeopleView.xaml;View\Product\ProductUpdateForm.xaml;View\Product\ProductView.xaml;View\Role\RoleUpdateForm.xaml;View\Role\RoleView.xaml;
+View\Coupon\CouponUpdateForm.xaml;View\Coupon\CouponView.xaml;View\Customer\CustomerUpdateForm.xaml;View\Customer\CustomerView.xaml;View\DashBoard.xaml;View\LoginWindow.xaml;View\MainWindow.xaml;View\People\PeopleUpdateForm.xaml;View\People\PeopleView.xaml;View\Product\ProductUpdateForm.xaml;View\Product\ProductView.xaml;View\Role\RoleUpdateForm.xaml;View\Role\RoleView.xaml;View\Stock\StockView.xaml;View\Storage\StorageUpdateForm.xaml;View\Storage\StorageView.xaml;
 
 False
 

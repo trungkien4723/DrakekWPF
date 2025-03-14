@@ -12,6 +12,7 @@ namespace drakek.Data
         public DbSet<Storage> storage { get; set; }
         public DbSet<Stock> stock { get; set; }
         public DbSet<Customer> customer { get; set; }
+        public DbSet<Coupon> coupon { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
