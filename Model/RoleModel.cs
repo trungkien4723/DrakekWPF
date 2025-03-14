@@ -5,5 +5,6 @@ namespace drakek.Model
         public string id { get; set; }
         public string name { get; set; }
         public string permission { get; set; }
+        public DateTime createdDate { get; set; }
     }
 }

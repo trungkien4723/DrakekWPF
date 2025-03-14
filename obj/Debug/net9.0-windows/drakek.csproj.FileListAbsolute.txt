@@ -316,3 +316,17 @@ D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\refint\drakek.dll
 D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\drakek.pdb
 D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\drakek.genruntimeconfig.cache
 D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\ref\drakek.dll
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Storage\StorageUpdateForm.baml
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Storage\StorageUpdateForm.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Storage\StorageView.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Storage\StorageView.baml
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Stock\StockView.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Stock\StockView.baml
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Customer\CustomerUpdateForm.baml
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Customer\CustomerUpdateForm.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Customer\CustomerView.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Customer\CustomerView.baml
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Coupon\CouponUpdateForm.baml
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Coupon\CouponUpdateForm.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Coupon\CouponView.g.cs
+D:\1attime\DrakekWPF\obj\Debug\net9.0-windows\View\Coupon\CouponView.baml

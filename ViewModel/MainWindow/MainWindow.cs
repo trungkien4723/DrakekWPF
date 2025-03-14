@@ -26,30 +26,38 @@ namespace drakek.ViewModel{
             set {
                 if(CurrentUser != value){
                     CurrentUser = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(currentUser));
+                    OnPropertyChanged(nameof(currentUserFirstName));
                     LoadProfileImage();
                 }
+            }
+        }
+        public string currentUserFirstName
+        {
+            get
+            {
+                if (CurrentUser != null && !string.IsNullOrEmpty(CurrentUser.name))
+                {
+                    return CurrentUser.name.Split(' ')[0];
+                }
+                return string.Empty;
             }
         }
         public MainWindow(People user)
         {
             InitializeComponent();
-            DataContext = this;
             currentUser = user;
+            DataContext = this;
         }
-        private void LoadProfileImage()
+        public void LoadProfileImage()
         {
             try
             {
-                Uri profileImageUri = new Uri(!string.IsNullOrEmpty(currentUser.image) ? 
+                Uri profileImageUri = new Uri(File.Exists(currentUser.image) ? 
                     currentUser.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
                 BitmapImage profileImage = new BitmapImage(profileImageUri);
                 ProfileImage.Source = profileImage;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load profile image: {ex.Message}");
-            }
+            }catch (Exception ex){}
         }
         private void Window_Loaded(object sender, RoutedEventArgs e){
             renderPages.Children.Clear();
@@ -75,7 +83,12 @@ namespace drakek.ViewModel{
         private void AccountOptions_Click(object sender, RoutedEventArgs e){
             ProfileImage.ContextMenu.IsOpen = true;
         }
-        private void ViewProfile_Click(object sender, RoutedEventArgs e){}
+        private void ViewProfile_Click(object sender, RoutedEventArgs e){
+            PeopleView peopleView = new PeopleView();
+            renderPages.Children.Clear();
+            renderPages.Children.Add(peopleView);
+            peopleView.showUpdatePeopleForm(currentUser.id);
+        }
         private void Settings_Click(object sender, RoutedEventArgs e){}
         private void Logout_Click(object sender, RoutedEventArgs e){
             using (var cred = new Credential()){
@@ -88,29 +101,43 @@ namespace drakek.ViewModel{
         }
         private void changeSelectedMenuPage(object sender, SelectionChangedEventArgs e){
             if (mainMenu.SelectedItem is ListViewItem selectedItem)
-                {
-                    renderPages.Children.Clear();
-                    switch (selectedItem.Name.ToString())
-                    {
-                        case "menuDashboard":
-                            renderPages.Children.Add(new DashboardView());
-                        break;
-                        case "menuProduct":
-                            renderPages.Children.Add(new ProductView());
-                        break;
-                        case "menuPeople":
-                            renderPages.Children.Add(new PeopleView());
-                        break;
-                        case "menuRole":
-                            renderPages.Children.Add(new RoleView());
-                        break;
-                        default:
-                            renderPages.Children.Add(new DashboardView());
-                        break; 
-                    }
-                }
+            {
+                changePage(selectedItem.Name.ToString());
+            }
         }
-
+        public void changePage(string pageName){
+            renderPages.Children.Clear();
+            switch (pageName)
+            {
+                case "menuDashboard":
+                    renderPages.Children.Add(new DashboardView());
+                break;
+                case "menuProduct":
+                    renderPages.Children.Add(new ProductView());
+                break;
+                case "menuPeople":
+                    renderPages.Children.Add(new PeopleView());
+                break;
+                case "menuRole":
+                    renderPages.Children.Add(new RoleView());
+                break;
+                case "menuStorage":
+                    renderPages.Children.Add(new StorageView());
+                break;
+                case "menuStock":
+                    renderPages.Children.Add(new StockView());
+                break;
+                case "menuCustomer":
+                    renderPages.Children.Add(new CustomerView());
+                break;
+                case "menuCoupon":
+                    renderPages.Children.Add(new CouponView());
+                break;
+                default:
+                    renderPages.Children.Add(new DashboardView());
+                break; 
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

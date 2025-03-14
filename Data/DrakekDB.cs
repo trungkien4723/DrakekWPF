@@ -9,6 +9,10 @@ namespace drakek.Data
         public DbSet<People> people { get; set; }
         public DbSet<Role> role { get; set; }
         public DbSet<Permission> permission { get; set; }
+        public DbSet<Storage> storage { get; set; }
+        public DbSet<Stock> stock { get; set; }
+        public DbSet<Customer> customer { get; set; }
+        public DbSet<Coupon> coupon { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

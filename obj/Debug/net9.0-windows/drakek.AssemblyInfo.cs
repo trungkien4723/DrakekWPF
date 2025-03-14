@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("drakek")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c01322add5c49911c5d65e19da8b71aca1aa7677")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+450df9a8f2b616e01554c2f0e7bc88f2d9b64109")]
 [assembly: System.Reflection.AssemblyProductAttribute("drakek")]
 [assembly: System.Reflection.AssemblyTitleAttribute("drakek")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
