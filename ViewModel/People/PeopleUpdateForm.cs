@@ -38,7 +38,8 @@ namespace drakek.ViewModel
             peopleToUpdate = peopleController.getPeople(id);
             if(peopleToUpdate != null){
                 PeopleName.Text = peopleToUpdate.name;
-                PeopleRole.SelectedValue = peopleToUpdate.role;
+                selectedRole = peopleToUpdate.role;
+                PeopleRole.SelectedValue = selectedRole;
                 PeopleEmail.Text = peopleToUpdate.email;
                 PeoplePhone.Text = peopleToUpdate.phone;
                 PeopleBirthday.SelectedDate = peopleToUpdate.birthday;
