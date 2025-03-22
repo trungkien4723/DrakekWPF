@@ -40,8 +40,7 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    Coupon getcoupon = context.coupon.Where(c => c.id == id).FirstOrDefault();
-                    if(getcoupon != null) coupon = getcoupon;
+                    coupon = context.coupon.Where(c => c.id == id).FirstOrDefault();
                 }
             }
             catch (Exception ex)

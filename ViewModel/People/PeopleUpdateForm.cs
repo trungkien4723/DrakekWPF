@@ -44,7 +44,8 @@ namespace drakek.ViewModel
                 PeoplePhone.Text = peopleToUpdate.phone;
                 PeopleBirthday.SelectedDate = peopleToUpdate.birthday;
                 PeoplePassword.Password = "";
-            }    
+            }
+            else peopleToUpdate = new People();    
             try{
                 Uri profileImageUri = new Uri(!string.IsNullOrEmpty(peopleToUpdate.image) && File.Exists(peopleToUpdate.image) ? 
                     peopleToUpdate.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
@@ -67,7 +68,7 @@ namespace drakek.ViewModel
                 selectedRole = null;
                 PeopleEmail.Text = "";
                 PeoplePhone.Text = "";
-                PeopleBirthday.SelectedDate = null;
+                PeopleBirthday.SelectedDate = DateTime.Now;
                 PeoplePassword.Password = "";
         }
 

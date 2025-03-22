@@ -55,6 +55,8 @@ namespace drakek.ViewModel
             CouponValue.Text = "";
             CouponValueType.Text = "";
             CouponDescription.Text = "";
+            CouponStartDate.SelectedDate = DateTime.Now;
+            CouponEndDate.SelectedDate = DateTime.Now;
         }
 
         private void saveCouponButton_Click(object sender, RoutedEventArgs e)

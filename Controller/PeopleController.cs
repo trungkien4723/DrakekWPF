@@ -37,13 +37,12 @@ namespace drakek.Controller
         }
 
         public People getPeople(string id){
-            People People = new People();
+            People people = new People();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    People getpeople = context.people.Where(p => p.id == id).FirstOrDefault();
-                    if(getpeople != null) People = getpeople;
+                    people = context.people.Where(p => p.id == id).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -51,7 +50,7 @@ namespace drakek.Controller
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            return People;
+            return people;
         }
 
         public People getPeopleByEmail(string email){
