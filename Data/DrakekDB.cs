@@ -13,6 +13,13 @@ namespace drakek.Data
         public DbSet<Stock> stock { get; set; }
         public DbSet<Customer> customer { get; set; }
         public DbSet<Coupon> coupon { get; set; }
+        public DbSet<Order> order { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Stock>()
+                .HasKey(s => new { s.product, s.storage });
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

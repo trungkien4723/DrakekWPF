@@ -40,7 +40,7 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    Product getproduct = context.product.Where(p => p.id == id).FirstOrDefault();
+                    product = context.product.Where(p => p.id == id).FirstOrDefault();
                 }
             }
             catch (Exception ex)
