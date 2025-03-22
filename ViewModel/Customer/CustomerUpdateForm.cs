@@ -20,6 +20,7 @@ namespace drakek.ViewModel
         private Customer customerToUpdate = new Customer();
         private CustomerController customerController = new CustomerController();
         private SupportFunctions supportFunctions = new SupportFunctions();
+        private PeopleController peopleController = new PeopleController();
         public CustomerView customerView;
         public CustomerUpdateForm()
         {
@@ -59,6 +60,7 @@ namespace drakek.ViewModel
 
         private void saveCustomerButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             customerToUpdate.name = CustomerName.Text;
             customerToUpdate.phone = CustomerPhone.Text;
             customerToUpdate.address = CustomerAddress.Text;
@@ -82,6 +84,41 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_customer")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(CustomerName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Name cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerPhone.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Phone cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerCity.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "City cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerDistrict.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "District cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerWard.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Ward cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }
