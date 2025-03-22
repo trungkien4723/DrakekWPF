@@ -51,28 +51,22 @@ namespace drakek.Controller
             return product;
         }
 
-        public void updateProduct(string id, string name, int price)
+        public void updateProduct(Product productToUpdate)
         {   
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    if(!string.IsNullOrEmpty(id)){
-                        var product = context.product.Where(p => p.id == id).FirstOrDefault();
-                        product.name = name;
-                        product.price = price;
+                    if(!string.IsNullOrEmpty(productToUpdate.id)){
+                        Product product = context.product.Where(p => p.id == productToUpdate.id).FirstOrDefault();
+                        product.name = productToUpdate.name;
+                        product.price = productToUpdate.price;
                         context.SaveChanges();
                     }
                     else{
-                            Product newProduct = new Product
-                            {
-                                id = supportFunctions.generateID("prdct", 5),
-                                name = name,
-                                price = price,
-                                createdDate = DateTime.Now
-                            };
-
-                            context.product.Add(newProduct);
+                            productToUpdate.id = supportFunctions.generateID("prdct", 5);
+                            productToUpdate.createdDate = DateTime.Now;
+                            context.product.Add(productToUpdate);
                             context.SaveChanges();
                     }
                 }

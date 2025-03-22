@@ -46,10 +46,13 @@ namespace drakek.ViewModel
 
         private void saveProductButtonClick(object sender, RoutedEventArgs e)
         {
-            string name = ProductName.Text;
-            int price = int.Parse(ProductPrice.Text);
-
-            productController.updateProduct(id, name, price);
+            if(!updateValidated()) return; 
+            Product productToUpdate = new Product(){
+                id = id,
+                name = ProductName.Text,
+                price = int.TryParse(ProductPrice.Text, out int p) ? p : 0,
+            };
+            productController.updateProduct(productToUpdate);
             closeForm();
         }
 
@@ -65,6 +68,30 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_product")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(ProductName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Name cannot be empty";
+            }
+            if(string.IsNullOrEmpty(ProductPrice.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Price cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }
