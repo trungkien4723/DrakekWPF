@@ -55,5 +55,6 @@
                     <Button Content="Save" Width="75" Click="saveRoleButtonClick"/>
                     <Button Content="Cancel" Width="75" Margin="10, 0, 0, 0"  Click="cancelUpdateRoleButtonClick"/>
                 </StackPanel>
+                <TextBlock Name="ValidateMessage" Foreground="Red" FontSize="11" Margin="10, 0, 10, 0"/>
             </Grid>
 </UserControl>

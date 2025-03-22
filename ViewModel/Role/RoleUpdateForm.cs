@@ -20,6 +20,7 @@ namespace drakek.ViewModel
         public RoleView roleView;
         public List<Permission> permissions = new List<Permission>();
         public List<Permission> selectedPermissions = new List<Permission>();
+        private PeopleController peopleController = new PeopleController();
         public RoleUpdateForm()
         {
             InitializeComponent();
@@ -58,6 +59,7 @@ namespace drakek.ViewModel
 
         private void saveRoleButtonClick(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             string name = RoleName.Text;
             List<string> updatedPermissionsIds = selectedPermissions.Select(sp => sp.id).ToList();
             foreach (CheckBox permissionCheckBox in RolePermissions.Children){
@@ -75,6 +77,26 @@ namespace drakek.ViewModel
         private void cancelUpdateRoleButtonClick(object sender, RoutedEventArgs e)
         {
             closeForm();
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_role")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(RoleName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Name cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }
