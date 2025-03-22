@@ -17,6 +17,7 @@ namespace drakek.ViewModel
         private StorageController storageController = new StorageController();
         private SupportFunctions supportFunctions = new SupportFunctions();
         public StorageView storageView;
+        private PeopleController peopleController = new PeopleController();
         public StorageUpdateForm()
         {
             InitializeComponent();
@@ -43,6 +44,7 @@ namespace drakek.ViewModel
 
         private void saveStorageButtonClick(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             Storage storageToUpdate = new Storage(){
                 id = id,
                 name = StorageName.Text
@@ -64,6 +66,26 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_storage")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(StorageName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Name cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }
