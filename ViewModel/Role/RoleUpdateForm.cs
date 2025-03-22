@@ -31,7 +31,7 @@ namespace drakek.ViewModel
             Role role = roleController.getRole(id);
             if(role != null){
                 RoleName.Text = role.name;
-                selectedPermissions = roleController.getRolePermission(role.permission);
+                selectedPermissions = roleController.convertPermissionString(role.permission);
             }
             foreach (Permission permission in permissions){
                 CheckBox permissionCheckBox = new CheckBox();

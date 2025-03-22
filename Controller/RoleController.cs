@@ -163,7 +163,7 @@ namespace drakek.Controller
             return permission;
         }
 
-        public List<Permission> getRolePermission(string permissionIds)
+        public List<Permission> convertPermissionString(string permissionIds)
         {
             List<Permission> permissions = new List<Permission>();
             try

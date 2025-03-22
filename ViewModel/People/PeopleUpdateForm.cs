@@ -70,10 +70,12 @@ namespace drakek.ViewModel
                 PeoplePhone.Text = "";
                 PeopleBirthday.SelectedDate = DateTime.Now;
                 PeoplePassword.Password = "";
+                ValidateMessage.Text = "";
         }
 
         private void savePeopleButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             string targetFilePath = peopleToUpdate.image;
             try
             {
@@ -144,6 +146,42 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_people")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(PeoplePhone.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Phone cannot be empty";
+            }
+            if(string.IsNullOrEmpty(PeopleEmail.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Email cannot be empty";
+            }
+            if(string.IsNullOrEmpty(PeopleName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Email cannot be empty";
+            }
+            if(PeopleRole.SelectedValue == null){
+                canUpdate = false;
+                ValidateMessage.Text = "Role cannot be empty";
+            }
+            if(string.IsNullOrEmpty(id) && string.IsNullOrEmpty(PeoplePassword.Password)){
+                canUpdate = false;
+                ValidateMessage.Text = "Password cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }

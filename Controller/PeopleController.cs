@@ -19,6 +19,7 @@ namespace drakek.Controller
     public class PeopleController
     {
         SupportFunctions supportFunctions = new SupportFunctions();
+        RoleController roleController = new RoleController();
         public List<People> getAllPeople(){
             var PeopleData = new List<People>();
             try
@@ -172,6 +173,15 @@ namespace drakek.Controller
             supportFunctions.SendEmail(email, subject, body);
 
             MessageBox.Show("A temporary password has been sent to your email.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public List<Permission> getPeoplePermission(People people){
+            Role peopleRole = roleController.getRole(people.role);
+            return roleController.convertPermissionString(peopleRole.permission);
+        }
+
+        public bool checkPeoplePermission(People people, string permission){
+            return getPeoplePermission(people).FirstOrDefault(per => per.id == permission) != null;
         }
     }
 }

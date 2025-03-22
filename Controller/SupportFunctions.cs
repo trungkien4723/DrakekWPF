@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using drakek.Controller;
 using System.Net;
 using System.Net.Mail;
+using drakek.Model;
+using drakek.ViewModel;
 
 namespace Drakek.Controller
 {
@@ -87,6 +89,10 @@ namespace Drakek.Controller
             {
                 MessageBox.Show($"Failed to send email: {ex.Message}");
             }
+        }
+        public People currentUser(){
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
+            return mainWindow.currentUser;
         }
     }
 }
