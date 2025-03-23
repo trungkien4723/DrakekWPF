@@ -17,6 +17,7 @@ namespace drakek.ViewModel
 
         private ProductController productController = new ProductController();
         private SupportFunctions supportFunctions = new SupportFunctions();
+        PeopleController peopleController = new PeopleController();
         public ProductView productView;
         public ProductUpdateForm()
         {
