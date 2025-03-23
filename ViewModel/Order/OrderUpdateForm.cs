@@ -250,6 +250,7 @@ namespace drakek.ViewModel
 
         private void saveOrderButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             try{
                 int totalPrice = 0;
                 orderProducts = new List<OrderProduct>();
@@ -399,6 +400,92 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_order")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            switch(orderType.ToLower()){
+                case "buy":
+                    foreach (var control in productInputGrid.Children)
+                    {
+                        if (control is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
+                        {
+                            if (Grid.GetColumn(textBox) == 2)
+                            {
+                                canUpdate = false;
+                                ValidateMessage.Text = "Quantity cannot be empty";
+                            }
+                            else if (Grid.GetColumn(textBox) == 3)
+                            {
+                                canUpdate = false;
+                                ValidateMessage.Text = "Price cannot be empty";
+                            }
+                        }
+                        else if (control is ComboBox comboBox && comboBox.SelectedValue == null)
+                        {
+                            if(Grid.GetColumn(comboBox) == 0){
+                                canUpdate = false;
+                                ValidateMessage.Text = "Product cannot be empty";
+                            }
+                            else if (Grid.GetColumn(comboBox) == 1){
+                                canUpdate = false;
+                                ValidateMessage.Text = "Storage cannot be empty";
+                            }
+                        }
+                    }
+                break;
+                case "sell":
+                    foreach (var control in productInputGrid.Children)
+                    {
+                        if (control is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
+                        {
+                            if (Grid.GetColumn(textBox) == 2)
+                            {
+                                canUpdate = false;
+                                ValidateMessage.Text = "Quantity cannot be empty";
+                            }
+                            else if (Grid.GetColumn(textBox) == 3)
+                            {
+                                canUpdate = false;
+                                ValidateMessage.Text = "Price cannot be empty";
+                            }
+                        }
+                        else if (control is ComboBox comboBox && Grid.GetColumn(comboBox) == 0 && comboBox.SelectedValue == null)
+                        {
+                            canUpdate = false;
+                            ValidateMessage.Text = "Product cannot be empty";
+                        }
+                    }
+                break;
+            }
+            if(string.IsNullOrEmpty(selectedStaff)){
+                canUpdate = false;
+                ValidateMessage.Text = "Staff cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerNameInput.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Customer name cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerPhoneInput.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Customer phone cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CustomerCityInput.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Customer city cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }

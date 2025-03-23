@@ -199,5 +199,6 @@
                     <Button Content="Save" Width="75" Click="saveOrderButton_Click"/>
                     <Button Content="Cancel" Width="75" Margin="10, 0, 0, 0"  Click="cancelUpdateOrderButton_Click"/>
                 </StackPanel>
+                <TextBlock Name="ValidateMessage" Foreground="Red" FontSize="11" Margin="10, 0, 10, 0"/>
             </Grid>
 </UserControl>
