@@ -82,12 +82,17 @@ namespace drakek.ViewModel
             try
             {
                 if(!string.IsNullOrEmpty(newProfilePictureSourcePath)){
-                    targetFilePath = Path.Combine(profilePictureDirectory, Path.GetFileName(newProfilePictureSourcePath));
-                    if (!Directory.Exists(profilePictureDirectory)) Directory.CreateDirectory(profilePictureDirectory);
-                    if (!string.IsNullOrEmpty(newProfilePictureSourcePath) && File.Exists(newProfilePictureSourcePath)){
-                        using (FileStream sourceStream = new FileStream(newProfilePictureSourcePath, FileMode.Open, FileAccess.Read, FileShare.Read)){
-                            using (FileStream targetStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write, FileShare.None)){
-                                sourceStream.CopyTo(targetStream);
+                    if(newProfilePictureSourcePath == "clearProfileImage"){
+                        targetFilePath = "";
+                    }
+                    else{
+                        targetFilePath = Path.Combine(profilePictureDirectory, Path.GetFileName(newProfilePictureSourcePath));
+                        if (!Directory.Exists(profilePictureDirectory)) Directory.CreateDirectory(profilePictureDirectory);
+                        if (!string.IsNullOrEmpty(newProfilePictureSourcePath) && File.Exists(newProfilePictureSourcePath)){
+                            using (FileStream sourceStream = new FileStream(newProfilePictureSourcePath, FileMode.Open, FileAccess.Read, FileShare.Read)){
+                                using (FileStream targetStream = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write, FileShare.None)){
+                                    sourceStream.CopyTo(targetStream);
+                                }
                             }
                         }
                     }
@@ -138,6 +143,12 @@ namespace drakek.ViewModel
                     ProfileImage.Source = bitmap;
                 }
             }
+        }
+
+        private void clearProfileImage_Click(object sender, RoutedEventArgs e)
+        {
+            newProfilePictureSourcePath = "clearProfileImage";
+            ProfileImage.Source = new BitmapImage(new Uri("pack://application:,,,/Images/ProfilePictures/defaultavatar.png"));
         }
 
         private void numberInputOnlyTextbox(object sender, TextCompositionEventArgs e)

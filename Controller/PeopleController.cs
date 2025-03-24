@@ -87,7 +87,7 @@ namespace drakek.Controller
                         if(!string.IsNullOrEmpty(peopleToUpdate.password)){
                             people.password = hashPassword(peopleToUpdate.password);
                         }
-                        if(!string.IsNullOrEmpty(peopleToUpdate.image)) people.image = peopleToUpdate.image;
+                        people.image = peopleToUpdate.image;
                         context.SaveChanges();
                     }
                     else{
