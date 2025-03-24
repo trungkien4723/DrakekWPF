@@ -105,9 +105,8 @@ namespace drakek.ViewModel
                 newProfilePictureSourcePath = "";
                 peopleController.updatePeople(peopleToUpdate);
 
-                MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
-                if(peopleToUpdate.id == mainWindow.currentUser.id){
-                    mainWindow = new MainWindow(peopleToUpdate);
+                if(peopleToUpdate.id == supportFunctions.mainWindow.currentUser.id){
+                    supportFunctions.mainWindow.currentUser = peopleToUpdate;
                 }
 
                 closeForm();
