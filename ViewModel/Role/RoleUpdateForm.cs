@@ -48,8 +48,10 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            roleView.showRolePanel();
             RolePermissions.Children.Clear();
+
+            if(roleView.checkAccessPermission()) roleView.showRolePanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {

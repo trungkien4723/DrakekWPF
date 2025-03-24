@@ -16,6 +16,8 @@ namespace Drakek.Controller
 {
     public class SupportFunctions
     {
+        public MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
+
         public void previewTextInput(object sender, TextCompositionEventArgs e, string allowType)
         {
             e.Handled = !IsTextAllowed(e.Text, allowType);
@@ -91,7 +93,6 @@ namespace Drakek.Controller
             }
         }
         public People currentUser(){
-            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
             return mainWindow.currentUser;
         }
     }

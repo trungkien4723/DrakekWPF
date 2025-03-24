@@ -35,7 +35,9 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            storageView.showStoragePanel();
+            
+            if(storageView.checkAccessPermission()) storageView.showStoragePanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {

@@ -48,7 +48,9 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            couponView.showCouponPanel();
+            
+            if(couponView.checkAccessPermission()) couponView.showCouponPanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {

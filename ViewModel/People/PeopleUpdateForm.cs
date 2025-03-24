@@ -60,7 +60,9 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            peopleView.showPeoplePanel();
+            
+            if(peopleView.checkAccessPermission()) peopleView.showPeoplePanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {

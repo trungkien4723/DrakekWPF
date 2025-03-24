@@ -86,8 +86,17 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            if(orderType == "buy"){ StockView stockView = new StockView(); stockView.showStockPanel();}
-            else{orderView.showOrderPanel();}
+            if(orderType == "buy"){
+                StockView stockView = new StockView(); 
+                if(stockView.checkAccessPermission()){
+                    stockView.showStockPanel();
+                }
+                else supportFunctions.mainWindow.changePage("menuDashboard");
+            }
+            else{
+                if(orderView.checkAccessPermission()) orderView.showOrderPanel();
+                else supportFunctions.mainWindow.changePage("menuDashboard");
+            }
         }
         private void clearForm()
         {

@@ -37,7 +37,9 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            productView.showProductPanel();
+            
+            if(productView.checkAccessPermission()) productView.showProductPanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {

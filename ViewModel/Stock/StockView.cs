@@ -6,11 +6,14 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
     public partial class StockView: UserControl
     {
+        private SupportFunctions supportFunctions = new SupportFunctions();
+        private PeopleController peopleController = new PeopleController();
         private StockController stockController = new StockController();
         private ProductController productController = new ProductController();
         private StorageController storageController = new StorageController();
@@ -26,6 +29,10 @@ namespace drakek.ViewModel
         }
         public void showStockPanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<Stock> stocks = stockController.getAllStocks();
             var stocksData = stocks.Select((stock, i) => new
             {
@@ -49,6 +56,12 @@ namespace drakek.ViewModel
             OrderUpdateForm.id = updateOrderId;
             OrderUpdateForm.orderType = orderType.ToLower();
             OrderUpdateForm.showForm();
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_stock") == true;
         }
     }
 }

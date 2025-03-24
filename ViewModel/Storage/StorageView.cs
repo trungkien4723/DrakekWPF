@@ -6,11 +6,14 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
     public partial class StorageView: UserControl
     {
+        private PeopleController peopleController = new PeopleController();
+        private SupportFunctions supportFunctions = new SupportFunctions();
         private StorageController storageController = new StorageController();
         public StorageView()
         {
@@ -58,6 +61,10 @@ namespace drakek.ViewModel
         }
         public void showStoragePanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<Storage> storages = storageController.getAllStorages();
             var storagesData = storages.Select((storage, i) => new
             {
@@ -72,6 +79,12 @@ namespace drakek.ViewModel
         public void closeStoragePanel()
         {
             StorageViewPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_storage") == true;
         }
     }
 }

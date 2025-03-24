@@ -172,6 +172,20 @@ namespace drakek.ViewModel{
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void show403Page(){
+            renderPages.Children.Clear();
+            TextBlock forbiddenText = new TextBlock
+            {
+                Text = "You don't have permission to access this page",
+                Foreground = Brushes.Red,
+                FontSize = 24,
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            renderPages.Children.Add(forbiddenText);
+        }
     }
     public class MenuOption
     {
@@ -195,5 +209,4 @@ namespace drakek.ViewModel{
             new MenuOption { Name = "menuStock", Content = "Stock", RequiredPermission = "access_stock" }
         };
     }
-
 }
