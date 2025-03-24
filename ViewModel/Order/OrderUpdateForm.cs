@@ -414,59 +414,62 @@ namespace drakek.ViewModel
                 canUpdate = true;
                 ValidateMessage.Text = "";
             }
-            switch(orderType.ToLower()){
-                case "buy":
-                    foreach (var control in productInputGrid.Children)
-                    {
-                        if (control is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
+            foreach (Grid productInputGrid in OrderProductsForm.Children)
+            {
+                switch(orderType.ToLower()){
+                    case "buy":
+                        foreach (var control in productInputGrid.Children)
                         {
-                            if (Grid.GetColumn(textBox) == 2)
+                            if (control is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
                             {
-                                canUpdate = false;
-                                ValidateMessage.Text = "Quantity cannot be empty";
+                                if (Grid.GetColumn(textBox) == 2)
+                                {
+                                    canUpdate = false;
+                                    ValidateMessage.Text = "Quantity cannot be empty";
+                                }
+                                else if (Grid.GetColumn(textBox) == 3)
+                                {
+                                    canUpdate = false;
+                                    ValidateMessage.Text = "Price cannot be empty";
+                                }
                             }
-                            else if (Grid.GetColumn(textBox) == 3)
+                            else if (control is ComboBox comboBox && comboBox.SelectedValue == null)
                             {
-                                canUpdate = false;
-                                ValidateMessage.Text = "Price cannot be empty";
+                                if(Grid.GetColumn(comboBox) == 0){
+                                    canUpdate = false;
+                                    ValidateMessage.Text = "Product cannot be empty";
+                                }
+                                else if (Grid.GetColumn(comboBox) == 1){
+                                    canUpdate = false;
+                                    ValidateMessage.Text = "Storage cannot be empty";
+                                }
                             }
                         }
-                        else if (control is ComboBox comboBox && comboBox.SelectedValue == null)
+                    break;
+                    case "sell":
+                        foreach (var control in productInputGrid.Children)
                         {
-                            if(Grid.GetColumn(comboBox) == 0){
+                            if (control is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
+                            {
+                                if (Grid.GetColumn(textBox) == 2)
+                                {
+                                    canUpdate = false;
+                                    ValidateMessage.Text = "Quantity cannot be empty";
+                                }
+                                else if (Grid.GetColumn(textBox) == 3)
+                                {
+                                    canUpdate = false;
+                                    ValidateMessage.Text = "Price cannot be empty";
+                                }
+                            }
+                            else if (control is ComboBox comboBox && Grid.GetColumn(comboBox) == 0 && comboBox.SelectedValue == null)
+                            {
                                 canUpdate = false;
                                 ValidateMessage.Text = "Product cannot be empty";
                             }
-                            else if (Grid.GetColumn(comboBox) == 1){
-                                canUpdate = false;
-                                ValidateMessage.Text = "Storage cannot be empty";
-                            }
                         }
-                    }
-                break;
-                case "sell":
-                    foreach (var control in productInputGrid.Children)
-                    {
-                        if (control is TextBox textBox && string.IsNullOrEmpty(textBox.Text))
-                        {
-                            if (Grid.GetColumn(textBox) == 2)
-                            {
-                                canUpdate = false;
-                                ValidateMessage.Text = "Quantity cannot be empty";
-                            }
-                            else if (Grid.GetColumn(textBox) == 3)
-                            {
-                                canUpdate = false;
-                                ValidateMessage.Text = "Price cannot be empty";
-                            }
-                        }
-                        else if (control is ComboBox comboBox && Grid.GetColumn(comboBox) == 0 && comboBox.SelectedValue == null)
-                        {
-                            canUpdate = false;
-                            ValidateMessage.Text = "Product cannot be empty";
-                        }
-                    }
-                break;
+                    break;
+                }
             }
             if(string.IsNullOrEmpty(selectedStaff)){
                 canUpdate = false;
