@@ -152,7 +152,7 @@ namespace drakek.ViewModel
             bool canUpdate = true;
             People currentUser = supportFunctions.currentUser();
 
-            if(!peopleController.checkPeoplePermission(currentUser, "update_people")){
+            if(!peopleController.checkPeoplePermission(currentUser, "update_people") && peopleToUpdate.id != currentUser.id){
                 canUpdate = false;
                 ValidateMessage.Text = "You don't have permission to update";
             };
