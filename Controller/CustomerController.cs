@@ -40,8 +40,7 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    Customer getcustomer = context.customer.Where(c => c.id == id).FirstOrDefault();
-                    if(getcustomer != null) customer = getcustomer;
+                    customer = context.customer.Where(c => c.id == id).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -52,7 +51,24 @@ namespace drakek.Controller
             return customer;
         }
 
-        public void updateCustomer(Customer customerToUpdate)
+        public Customer getCustomerByPhone(string phone){
+            Customer customer = new Customer();
+            try
+            {
+                using (var context = new DrakekDB())
+                {
+                    customer = context.customer.Where(c => c.phone == phone).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return customer;
+        }
+
+        public Customer updateCustomer(Customer customerToUpdate)
         {   
             try
             {
@@ -67,18 +83,21 @@ namespace drakek.Controller
                         if(!string.IsNullOrEmpty(customerToUpdate.district)) customer.district = customerToUpdate.district;
                         if(!string.IsNullOrEmpty(customerToUpdate.ward)) customer.ward = customerToUpdate.ward;
                         context.SaveChanges();
+                        return customer;
                     }
                     else{
                         customerToUpdate.id = supportFunctions.generateID("cstm", 5);
                         customerToUpdate.createdDate = DateTime.Now;
                         context.customer.Add(customerToUpdate);
                         context.SaveChanges();
+                        return customerToUpdate;
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
             }
         }
 

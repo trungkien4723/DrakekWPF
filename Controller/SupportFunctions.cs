@@ -9,11 +9,15 @@ using System.Text.RegularExpressions;
 using drakek.Controller;
 using System.Net;
 using System.Net.Mail;
+using drakek.Model;
+using drakek.ViewModel;
 
 namespace Drakek.Controller
 {
     public class SupportFunctions
     {
+        public MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault(mw => mw.Visibility == Visibility.Visible);
+
         public void previewTextInput(object sender, TextCompositionEventArgs e, string allowType)
         {
             e.Handled = !IsTextAllowed(e.Text, allowType);
@@ -87,6 +91,9 @@ namespace Drakek.Controller
             {
                 MessageBox.Show($"Failed to send email: {ex.Message}");
             }
+        }
+        public People currentUser(){
+            return mainWindow.currentUser;
         }
     }
 }

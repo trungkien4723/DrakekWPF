@@ -39,8 +39,7 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    Stock getstock = context.stock.Where(s => s.product == productId && s.storage == storageId).FirstOrDefault();
-                    if(getstock != null) stock = getstock;
+                    stock = context.stock.Where(s => s.product == productId && s.storage == storageId).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -58,9 +57,14 @@ namespace drakek.Controller
                 using (var context = new DrakekDB())
                 {
                     if(!string.IsNullOrEmpty(stockToUpdate.product) && !string.IsNullOrEmpty(stockToUpdate.storage)){
-                        var stock = context.stock.Where(s => s.product == stockToUpdate.product && s.storage == stockToUpdate.storage).FirstOrDefault();
-                        stock.quantity = stockToUpdate.quantity;
-                        stock.expiredDate = stockToUpdate.expiredDate;
+                        var tmpStock = context.stock.Where(s => s.product == stockToUpdate.product && s.storage == stockToUpdate.storage).FirstOrDefault();
+                        if(tmpStock == null) {
+                            tmpStock = stockToUpdate;
+                            tmpStock.createdDate = DateTime.Now;
+                            context.stock.Add(tmpStock);
+                        }
+                        tmpStock.quantity = stockToUpdate.quantity;
+                        tmpStock.expiredDate = stockToUpdate.expiredDate;
                         context.SaveChanges();
                     }
                 }

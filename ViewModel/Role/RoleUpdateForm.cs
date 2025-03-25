@@ -20,6 +20,7 @@ namespace drakek.ViewModel
         public RoleView roleView;
         public List<Permission> permissions = new List<Permission>();
         public List<Permission> selectedPermissions = new List<Permission>();
+        private PeopleController peopleController = new PeopleController();
         public RoleUpdateForm()
         {
             InitializeComponent();
@@ -31,7 +32,7 @@ namespace drakek.ViewModel
             Role role = roleController.getRole(id);
             if(role != null){
                 RoleName.Text = role.name;
-                selectedPermissions = roleController.getRolePermission(role.permission);
+                selectedPermissions = roleController.convertPermissionString(role.permission);
             }
             foreach (Permission permission in permissions){
                 CheckBox permissionCheckBox = new CheckBox();
@@ -47,8 +48,10 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            roleView.showRolePanel();
             RolePermissions.Children.Clear();
+
+            if(roleView.checkAccessPermission()) roleView.showRolePanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {
@@ -58,6 +61,7 @@ namespace drakek.ViewModel
 
         private void saveRoleButtonClick(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             string name = RoleName.Text;
             List<string> updatedPermissionsIds = selectedPermissions.Select(sp => sp.id).ToList();
             foreach (CheckBox permissionCheckBox in RolePermissions.Children){
@@ -75,6 +79,26 @@ namespace drakek.ViewModel
         private void cancelUpdateRoleButtonClick(object sender, RoutedEventArgs e)
         {
             closeForm();
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_role")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(RoleName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Name cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }

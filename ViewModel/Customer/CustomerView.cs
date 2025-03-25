@@ -6,11 +6,14 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
     public partial class CustomerView: UserControl
     {
+        private SupportFunctions supportFunctions = new SupportFunctions();
+        private PeopleController peopleController = new PeopleController();
         private CustomerController customerController = new CustomerController();
         public CustomerView()
         {
@@ -56,6 +59,10 @@ namespace drakek.ViewModel
         }
         public void showCustomerPanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<Customer> allCustomer = customerController.getAllCustomers();
             var allCustomerData = allCustomer.Select((customer, i) => new
             {
@@ -78,6 +85,12 @@ namespace drakek.ViewModel
         public void showUpdateCustomerForm(string updateCustomerId){
             CustomerUpdateForm.id = updateCustomerId;
             CustomerUpdateForm.showForm();
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_customer") == true;
         }
     }
 }

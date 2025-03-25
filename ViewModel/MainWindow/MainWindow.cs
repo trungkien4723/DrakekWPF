@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.IO;
 using CredentialManagement;
+using drakek.Controller;
 
 namespace drakek.ViewModel{
     /// <summary>
@@ -20,6 +21,7 @@ namespace drakek.ViewModel{
 /// </summary>
     public partial class MainWindow : Window
     {
+        private PeopleController peopleController = new PeopleController();
         private People CurrentUser;
         public People currentUser{
             get { return CurrentUser; }
@@ -28,7 +30,7 @@ namespace drakek.ViewModel{
                     CurrentUser = value;
                     OnPropertyChanged(nameof(currentUser));
                     OnPropertyChanged(nameof(currentUserFirstName));
-                    LoadProfileImage();
+                    loadProfileImage();
                 }
             }
         }
@@ -48,8 +50,10 @@ namespace drakek.ViewModel{
             InitializeComponent();
             currentUser = user;
             DataContext = this;
+            loadMenuOptions();
         }
-        public void LoadProfileImage()
+
+        public void loadProfileImage()
         {
             try
             {
@@ -59,6 +63,28 @@ namespace drakek.ViewModel{
                 ProfileImage.Source = profileImage;
             }catch (Exception ex){}
         }
+
+        private void loadMenuOptions()
+        {
+            var filteredMenuOptions = MenuOptions.AllMenuOptions
+                .Where(option => string.IsNullOrEmpty(option.RequiredPermission) ||
+                    peopleController.checkPeoplePermission(currentUser, option.RequiredPermission) ||
+                    peopleController.checkPeoplePermission(currentUser, "access_all")
+                )
+                .ToList();
+            List<ListViewItem> menuItems = new List<ListViewItem>();
+            foreach (MenuOption option in filteredMenuOptions)
+            {
+                ListViewItem menuItem = new ListViewItem
+                {
+                    Name = option.Name,
+                    Content = option.Content
+                };
+                menuItems.Add(menuItem);
+            }
+            mainMenu.ItemsSource = menuItems;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e){
             renderPages.Children.Clear();
             renderPages.Children.Add(new DashboardView());
@@ -133,6 +159,9 @@ namespace drakek.ViewModel{
                 case "menuCoupon":
                     renderPages.Children.Add(new CouponView());
                 break;
+                case "menuOrder":
+                    renderPages.Children.Add(new OrderView());
+                break;
                 default:
                     renderPages.Children.Add(new DashboardView());
                 break; 
@@ -143,5 +172,41 @@ namespace drakek.ViewModel{
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void show403Page(){
+            renderPages.Children.Clear();
+            TextBlock forbiddenText = new TextBlock
+            {
+                Text = "You don't have permission to access this page",
+                Foreground = Brushes.Red,
+                FontSize = 24,
+                FontWeight = FontWeights.Bold,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            renderPages.Children.Add(forbiddenText);
+        }
+    }
+    public class MenuOption
+    {
+        public string Name { get; set; }
+        public string Content { get; set; }
+        public string RequiredPermission { get; set; }
+    }
+
+    public static class MenuOptions
+    {
+        public static List<MenuOption> AllMenuOptions = new List<MenuOption>
+        {
+            new MenuOption { Name = "menuDashboard", Content = "Dashboard", RequiredPermission = "" },
+            new MenuOption { Name = "menuOrder", Content = "Order", RequiredPermission = "access_order" },
+            new MenuOption { Name = "menuProduct", Content = "Product", RequiredPermission = "access_product" },
+            new MenuOption { Name = "menuPeople", Content = "People", RequiredPermission = "access_people" },
+            new MenuOption { Name = "menuCustomer", Content = "Customer", RequiredPermission = "access_customer" },
+            new MenuOption { Name = "menuStorage", Content = "Storage", RequiredPermission = "access_storage" },
+            new MenuOption { Name = "menuCoupon", Content = "Coupon", RequiredPermission = "access_coupon" },
+            new MenuOption { Name = "menuRole", Content = "Role", RequiredPermission = "access_role" },
+            new MenuOption { Name = "menuStock", Content = "Stock", RequiredPermission = "access_stock" }
+        };
     }
 }

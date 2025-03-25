@@ -6,11 +6,14 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
     public partial class RoleView: UserControl
     {
+        private PeopleController peopleController = new PeopleController();
+        private SupportFunctions supportFunctions = new SupportFunctions();
         private RoleController roleController = new RoleController();
         public RoleView()
         {
@@ -58,6 +61,10 @@ namespace drakek.ViewModel
         }
         public void showRolePanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<Role> roles = roleController.getAllRoles();
             var rolesData = roles.Select((role, i) => new
             {
@@ -73,6 +80,12 @@ namespace drakek.ViewModel
         public void closeRolePanel()
         {
             RoleViewPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_role") == true;
         }
     }
 }

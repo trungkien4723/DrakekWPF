@@ -21,6 +21,7 @@ namespace drakek.ViewModel
         private Coupon couponToUpdate = new Coupon();
         private CouponController couponController = new CouponController();
         private SupportFunctions supportFunctions = new SupportFunctions();
+        PeopleController peopleController = new PeopleController();
         public CouponView couponView;
         public CouponUpdateForm()
         {
@@ -47,7 +48,9 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            couponView.showCouponPanel();
+            
+            if(couponView.checkAccessPermission()) couponView.showCouponPanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {
@@ -55,10 +58,13 @@ namespace drakek.ViewModel
             CouponValue.Text = "";
             CouponValueType.Text = "";
             CouponDescription.Text = "";
+            CouponStartDate.SelectedDate = DateTime.Now;
+            CouponEndDate.SelectedDate = DateTime.Now;
         }
 
         private void saveCouponButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             couponToUpdate.name = CouponName.Text;
             couponToUpdate.value = Int32.Parse(CouponValue.Text);
             couponToUpdate.valueType = CouponValueType.SelectedValue.ToString();
@@ -81,6 +87,42 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_coupon")){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(CouponName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Name cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CouponValue.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Coupon Value cannot be empty";
+            }
+            if(string.IsNullOrEmpty(CouponValueType.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Value type cannot be empty";
+            }
+            if(CouponStartDate.SelectedDate == null){
+                canUpdate = false;
+                ValidateMessage.Text = "Start date cannot be empty";
+            }
+            if(CouponEndDate.SelectedDate == null){
+                canUpdate = false;
+                ValidateMessage.Text = "End date cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }

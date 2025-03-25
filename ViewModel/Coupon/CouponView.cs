@@ -6,12 +6,15 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
     public partial class CouponView: UserControl
     {
+        private SupportFunctions supportFunctions = new SupportFunctions();
         private CouponController couponController = new CouponController();
+        private PeopleController peopleController = new PeopleController();
         public CouponView()
         {
             InitializeComponent();
@@ -56,6 +59,10 @@ namespace drakek.ViewModel
         }
         public void showCouponPanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<Coupon> allCoupon = couponController.getAllCoupons();
             var allCouponData = allCoupon.Select((coupon, i) => new
             {
@@ -81,6 +88,12 @@ namespace drakek.ViewModel
         public void showUpdateCouponForm(string updateCouponId){
             CouponUpdateForm.id = updateCouponId;
             CouponUpdateForm.showForm();
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_coupon") == true;
         }
     }
 }

@@ -45,10 +45,9 @@ namespace drakek.Controller
             {
                 using (var context = new DrakekDB())
                 {
-                    Role getrole = context.role.Where(r => r.id == id).FirstOrDefault();
-                    if(getrole != null){
-                        if(getrole.permission == null) getrole.permission = "No Permission";
-                        role = getrole;
+                    role = context.role.Where(r => r.id == id).FirstOrDefault();
+                    if(role != null){
+                        if(role.permission == null) role.permission = "No Permission";
                     }
                 }
             }
@@ -164,7 +163,7 @@ namespace drakek.Controller
             return permission;
         }
 
-        public List<Permission> getRolePermission(string permissionIds)
+        public List<Permission> convertPermissionString(string permissionIds)
         {
             List<Permission> permissions = new List<Permission>();
             try

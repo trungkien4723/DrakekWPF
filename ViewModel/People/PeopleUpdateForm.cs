@@ -38,12 +38,14 @@ namespace drakek.ViewModel
             peopleToUpdate = peopleController.getPeople(id);
             if(peopleToUpdate != null){
                 PeopleName.Text = peopleToUpdate.name;
-                PeopleRole.SelectedValue = peopleToUpdate.role;
+                selectedRole = peopleToUpdate.role;
+                PeopleRole.SelectedValue = selectedRole;
                 PeopleEmail.Text = peopleToUpdate.email;
                 PeoplePhone.Text = peopleToUpdate.phone;
                 PeopleBirthday.SelectedDate = peopleToUpdate.birthday;
                 PeoplePassword.Password = "";
-            }    
+            }
+            else peopleToUpdate = new People();    
             try{
                 Uri profileImageUri = new Uri(!string.IsNullOrEmpty(peopleToUpdate.image) && File.Exists(peopleToUpdate.image) ? 
                     peopleToUpdate.image : "pack://application:,,,/Images/ProfilePictures/defaultavatar.png", UriKind.RelativeOrAbsolute);
@@ -58,7 +60,9 @@ namespace drakek.ViewModel
             id="";
             clearForm();
             Visibility = Visibility.Collapsed;
-            peopleView.showPeoplePanel();
+            
+            if(peopleView.checkAccessPermission()) peopleView.showPeoplePanel();
+            else supportFunctions.mainWindow.changePage("menuDashboard");
         }
         private void clearForm()
         {
@@ -66,12 +70,14 @@ namespace drakek.ViewModel
                 selectedRole = null;
                 PeopleEmail.Text = "";
                 PeoplePhone.Text = "";
-                PeopleBirthday.SelectedDate = null;
+                PeopleBirthday.SelectedDate = DateTime.Now;
                 PeoplePassword.Password = "";
+                ValidateMessage.Text = "";
         }
 
         private void savePeopleButton_Click(object sender, RoutedEventArgs e)
         {
+            if(!updateValidated()) return;
             string targetFilePath = peopleToUpdate.image;
             try
             {
@@ -142,6 +148,42 @@ namespace drakek.ViewModel
         private void numberPasteOnlyTextbox(object sender, DataObjectPastingEventArgs e)
         {
             supportFunctions.previewTextPasting(sender, e, "number");
+        }
+
+        private bool updateValidated(){
+            bool canUpdate = true;
+            People currentUser = supportFunctions.currentUser();
+
+            if(!peopleController.checkPeoplePermission(currentUser, "update_people") && peopleToUpdate.id != currentUser.id){
+                canUpdate = false;
+                ValidateMessage.Text = "You don't have permission to update";
+            };
+            if(peopleController.checkPeoplePermission(currentUser, "update_all") == true){
+                canUpdate = true;
+                ValidateMessage.Text = "";
+            }
+            if(string.IsNullOrEmpty(PeoplePhone.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Phone cannot be empty";
+            }
+            if(string.IsNullOrEmpty(PeopleEmail.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Email cannot be empty";
+            }
+            if(string.IsNullOrEmpty(PeopleName.Text)){
+                canUpdate = false;
+                ValidateMessage.Text = "Email cannot be empty";
+            }
+            if(PeopleRole.SelectedValue == null){
+                canUpdate = false;
+                ValidateMessage.Text = "Role cannot be empty";
+            }
+            if(string.IsNullOrEmpty(id) && string.IsNullOrEmpty(PeoplePassword.Password)){
+                canUpdate = false;
+                ValidateMessage.Text = "Password cannot be empty";
+            }
+
+            return canUpdate;
         }
     }
 }

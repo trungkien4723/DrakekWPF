@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" 
         AllowsTransparency="True" Background="Transparent"
-        Title="Drakek" Height="450" Width="800"
+        Title="Drakek" Height="550" Width="900"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,17 +32,7 @@
                 </Image>
                 <TextBlock Text='{Binding currentUserFirstName}' HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Padding="10" TextTrimming="CharacterEllipsis" Width="100" ToolTip="{Binding currentUser.name}"/>
             </StackPanel>
-            <ListView Grid.Row="1" x:Name="mainMenu" HorizontalAlignment="Left" Height="450" Padding="10" VerticalAlignment="Top" Width="200" Background="Transparent" SelectionChanged="changeSelectedMenuPage">
-                <ListViewItem Content="Dashboard" Name="menuDashboard"/>
-                <ListViewItem Content="Product" Name="menuProduct"/>
-                <ListViewItem Content="People" Name="menuPeople"/>
-                <ListViewItem Content="Customer" Name="menuCustomer"/>
-                <ListViewItem Content="Order" Name="menuPOrder"/>
-                <ListViewItem Content="Storage" Name="menuStorage"/>
-                <ListViewItem Content="Coupon" Name="menuCoupon"/>
-                <ListViewItem Content="Role" Name="menuRole"/>
-                <ListViewItem Content="Stock" Name="menuStock"/>
-            </ListView>
+            <ListView Grid.Row="1" x:Name="mainMenu" HorizontalAlignment="Left" Height="450" Padding="10" VerticalAlignment="Top" Width="200" Background="Transparent" SelectionChanged="changeSelectedMenuPage"/>
         </Grid>
         <Grid Grid.Column="1" Background="lightgray">
             <Grid.RowDefinitions>

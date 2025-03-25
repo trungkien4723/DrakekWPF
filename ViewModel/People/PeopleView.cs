@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
@@ -13,6 +14,7 @@ namespace drakek.ViewModel
     {
         private PeopleController peopleController = new PeopleController();
         private RoleController roleController = new RoleController();
+        private SupportFunctions supportFunctions = new SupportFunctions();
         public PeopleView()
         {
             InitializeComponent();
@@ -58,6 +60,10 @@ namespace drakek.ViewModel
         }
         public void showPeoplePanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<People> allPeople = peopleController.getAllPeople();
             var allPeopleData = allPeople.Select((people, i) => new
             {
@@ -83,6 +89,12 @@ namespace drakek.ViewModel
         public void showUpdatePeopleForm(string updatePeopleId){
             PeopleUpdateForm.id = updatePeopleId;
             PeopleUpdateForm.showForm();
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_people") == true;
         }
     }
 }

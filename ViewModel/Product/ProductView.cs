@@ -6,11 +6,14 @@ using System.Windows.Controls;
 using drakek.Controller;
 using System.Windows;
 using drakek.Model;
+using Drakek.Controller;
 
 namespace drakek.ViewModel
 {
     public partial class ProductView: UserControl
     {
+        private SupportFunctions supportFunctions = new SupportFunctions();
+        private PeopleController peopleController = new PeopleController();
         private ProductController productController = new ProductController();
         public ProductView()
         {
@@ -59,6 +62,10 @@ namespace drakek.ViewModel
         }
         public void showProductPanel()
         {   
+            if (!checkAccessPermission()){
+                supportFunctions.mainWindow.show403Page();
+                return;
+            }
             List<Product> products = productController.getAllProducts();
             var productsData = products.Select((product, i) => new
             {
@@ -74,6 +81,12 @@ namespace drakek.ViewModel
         public void closeProductPanel()
         {
             ProductViewPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public bool checkAccessPermission()
+        {
+            return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
+                || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_product") == true;
         }
     }
 }
