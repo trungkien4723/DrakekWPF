@@ -87,7 +87,6 @@ namespace drakek.ViewModel
             clearForm();
             Visibility = Visibility.Collapsed;
             if(orderType == "buy"){
-                StockView stockView = new StockView(); 
                 if(stockView.checkAccessPermission()){
                     stockView.showStockPanel();
                 }
