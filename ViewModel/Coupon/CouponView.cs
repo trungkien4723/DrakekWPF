@@ -74,7 +74,7 @@ namespace drakek.ViewModel
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Coupon> allCoupon = couponController.getAllCoupons(searchFilters);
+            List<Coupon> allCoupon = couponController.getAllCoupons(searchFilters).OrderByDescending(c => c.createdDate).ToList();
             var allCouponData = allCoupon.Select((coupon, i) => new
             {
                 index = i + 1,
