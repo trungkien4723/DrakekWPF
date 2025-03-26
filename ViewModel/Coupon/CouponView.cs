@@ -57,13 +57,23 @@ namespace drakek.ViewModel
                 showCouponPanel();
             }
         }
-        public void showCouponPanel()
+        private void searchCouponButton_Click(object sender, RoutedEventArgs e)
+        {
+                Dictionary<string, string> filters = new Dictionary<string, string>
+                {
+                    { "name", SearchCoupon.Text },
+                    { "description", SearchCoupon.Text }
+                };
+                
+                showCouponPanel(filters);
+        }
+        public void showCouponPanel(Dictionary<string, string> filters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Coupon> allCoupon = couponController.getAllCoupons();
+            List<Coupon> allCoupon = couponController.getAllCoupons(filters);
             var allCouponData = allCoupon.Select((coupon, i) => new
             {
                 index = i + 1,
@@ -77,7 +87,7 @@ namespace drakek.ViewModel
                 endDate = coupon.endDate.ToString()
             }).ToList();
             CouponTable.ItemsSource = allCouponData;
-            CouponViewPanel.Visibility = Visibility.Visible;
+            if(CouponViewPanel.Visibility != Visibility.Visible) CouponViewPanel.Visibility = Visibility.Visible;
         }
 
         public void closeCouponPanel()
