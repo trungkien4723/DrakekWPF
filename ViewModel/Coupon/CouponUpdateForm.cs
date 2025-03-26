@@ -18,7 +18,7 @@ namespace drakek.ViewModel
     public partial class CouponUpdateForm: UserControl
     {
         public string id{get; set;}
-        private Coupon couponToUpdate = new Coupon();
+        private Coupon couponToUpdate;
         private CouponController couponController = new CouponController();
         private SupportFunctions supportFunctions = new SupportFunctions();
         PeopleController peopleController = new PeopleController();
@@ -39,7 +39,8 @@ namespace drakek.ViewModel
                 CouponDescription.Text = couponToUpdate.description;
                 CouponStartDate.SelectedDate = couponToUpdate.startDate;
                 CouponEndDate.SelectedDate = couponToUpdate.endDate;
-            }    
+            }
+            else couponToUpdate = new Coupon();    
             
             Visibility = Visibility.Visible;
             couponView.closeCouponPanel();
@@ -66,11 +67,12 @@ namespace drakek.ViewModel
         {
             if(!updateValidated()) return;
             couponToUpdate.name = CouponName.Text;
-            couponToUpdate.value = Int32.Parse(CouponValue.Text);
+            couponToUpdate.value = int.TryParse(CouponValue.Text, out int value) ? value : 0;
             couponToUpdate.valueType = CouponValueType.SelectedValue.ToString();
             couponToUpdate.description = CouponDescription.Text;
             couponToUpdate.startDate = CouponStartDate.SelectedDate.Value;
             couponToUpdate.endDate = CouponEndDate.SelectedDate.Value;
+
             couponController.updateCoupon(couponToUpdate);
             closeForm();
         }
@@ -120,6 +122,10 @@ namespace drakek.ViewModel
             if(CouponEndDate.SelectedDate == null){
                 canUpdate = false;
                 ValidateMessage.Text = "End date cannot be empty";
+            }
+            if(CouponEndDate.SelectedDate < CouponStartDate.SelectedDate){
+                canUpdate = false;
+                ValidateMessage.Text = "End date cannot before start date";
             }
 
             return canUpdate;
