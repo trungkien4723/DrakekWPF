@@ -15,6 +15,7 @@ namespace drakek.ViewModel
         private SupportFunctions supportFunctions = new SupportFunctions();
         private CouponController couponController = new CouponController();
         private PeopleController peopleController = new PeopleController();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
         public CouponView()
         {
             InitializeComponent();
@@ -54,12 +55,12 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 couponController.deleteCoupon(coupon.id);
-                showCouponPanel();
+                showCouponPanel(filters);
             }
         }
         private void searchCouponButton_Click(object sender, RoutedEventArgs e)
         {
-                Dictionary<string, string> filters = new Dictionary<string, string>
+                filters = new Dictionary<string, string>
                 {
                     { "name", SearchCoupon.Text },
                     { "description", SearchCoupon.Text }
@@ -67,13 +68,13 @@ namespace drakek.ViewModel
                 
                 showCouponPanel(filters);
         }
-        public void showCouponPanel(Dictionary<string, string> filters = null)
+        public void showCouponPanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Coupon> allCoupon = couponController.getAllCoupons(filters);
+            List<Coupon> allCoupon = couponController.getAllCoupons(searchFilters);
             var allCouponData = allCoupon.Select((coupon, i) => new
             {
                 index = i + 1,
