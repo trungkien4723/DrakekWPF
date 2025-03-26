@@ -17,13 +17,36 @@ namespace drakek.Controller
     public class CustomerController
     {
         SupportFunctions supportFunctions = new SupportFunctions();
-        public List<Customer> getAllCustomers(){
+        public List<Customer> getAllCustomers(Dictionary<string, string> filters = null){
             var customersData = new List<Customer>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    customersData = context.customer.ToList();
+                    var query = context.customer.AsQueryable();
+                    if(filters != null){
+                        IQueryable<Customer> orQuery = context.customer.Where(c => false);
+                        foreach (var filter in filters)
+                        {
+                            string key = filter.Key.ToLower();
+                            string value = filter.Value.ToLower();
+                            switch (key){
+                                case "name":
+                                    orQuery = orQuery.Union(context.customer.Where(c => c.name != null && c.name.ToLower().Contains(value)));
+                                    break;
+                                case "phone":
+                                    orQuery = orQuery.Union(context.customer.Where(c => c.phone != null && c.phone.ToLower().Contains(value)));
+                                    break;
+                                case "city":
+                                    orQuery = orQuery.Union(context.customer.Where(c => c.city != null && c.city.ToLower().Contains(value)));
+                                    break;
+                            }
+                        }
+
+                        query = orQuery;
+
+                    }
+                    customersData = query.ToList();
                 }
             }
             catch (Exception ex)
