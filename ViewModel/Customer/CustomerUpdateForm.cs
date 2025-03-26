@@ -17,7 +17,7 @@ namespace drakek.ViewModel
     public partial class CustomerUpdateForm: UserControl
     {
         public string id{get; set;}
-        private Customer customerToUpdate = new Customer();
+        private Customer customerToUpdate;
         private CustomerController customerController = new CustomerController();
         private SupportFunctions supportFunctions = new SupportFunctions();
         private PeopleController peopleController = new PeopleController();
@@ -37,7 +37,8 @@ namespace drakek.ViewModel
                 CustomerCity.Text = customerToUpdate.city;
                 CustomerDistrict.Text = customerToUpdate.district;
                 CustomerWard.Text = customerToUpdate.ward;
-            }    
+            }
+            else customerToUpdate = new Customer();    
             
             Visibility = Visibility.Visible;
             customerView.closeCustomerPanel();
