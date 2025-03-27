@@ -78,6 +78,8 @@ namespace drakek.ViewModel
                 selectedCoupon = "noCoupon";
             }
             OrderCoupon.SelectedValue = selectedCoupon;
+            if(orderType.ToLower() == "buy") OrderCouponGrid.Visibility = Visibility.Collapsed;
+            else OrderCouponGrid.Visibility = Visibility.Visible;
             Visibility = Visibility.Visible;
             if(orderView != null) orderView.closeOrderPanel();
             else if(stockView != null) stockView.closeStockPanel();
