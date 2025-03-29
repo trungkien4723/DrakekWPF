@@ -17,13 +17,30 @@ namespace drakek.Controller
     public class ProductController
     {
         SupportFunctions supportFunctions = new SupportFunctions();
-        public List<Product> getAllProducts(){
+        public List<Product> getAllProducts(Dictionary<string, string> filters = null){
             var productsData = new List<Product>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    productsData = context.product.ToList();
+                    var query = context.product.AsQueryable();
+                    if(filters != null){
+                        IQueryable<Product> orQuery = context.product.Where(c => false);
+                        foreach (var filter in filters)
+                        {
+                            string key = filter.Key.ToLower();
+                            string value = filter.Value.ToLower();
+                            switch (key){
+                                case "name":
+                                    orQuery = orQuery.Union(context.product.Where(p => p.name != null && p.name.ToLower().Contains(value)));
+                                    break;
+                            }
+                        }
+
+                        query = orQuery;
+
+                    }
+                    productsData = query.ToList();
                 }
             }
             catch (Exception ex)
@@ -64,10 +81,10 @@ namespace drakek.Controller
                         context.SaveChanges();
                     }
                     else{
-                            productToUpdate.id = supportFunctions.generateID("prdct", 5);
-                            productToUpdate.createdDate = DateTime.Now;
-                            context.product.Add(productToUpdate);
-                            context.SaveChanges();
+                        productToUpdate.id = supportFunctions.generateID("prdct", 5);
+                        productToUpdate.createdDate = DateTime.Now;
+                        context.product.Add(productToUpdate);
+                        context.SaveChanges();
                     }
                 }
             }
