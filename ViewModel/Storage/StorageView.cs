@@ -15,6 +15,7 @@ namespace drakek.ViewModel
         private PeopleController peopleController = new PeopleController();
         private SupportFunctions supportFunctions = new SupportFunctions();
         private StorageController storageController = new StorageController();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
         public StorageView()
         {
             InitializeComponent();
@@ -56,16 +57,23 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 storageController.deleteStorage(storage.id);
-                showStoragePanel();
+                showStoragePanel(filters);
             }
         }
-        public void showStoragePanel()
+
+        private void searchStorageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (filters.ContainsKey("name")) filters["name"] = SearchStorage.Text;
+            else filters.Add("name", SearchStorage.Text);
+            showStoragePanel(filters);
+        }
+        public void showStoragePanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Storage> storages = storageController.getAllStorages();
+            List<Storage> storages = storageController.getAllStorages(searchFilters).OrderByDescending(s => s.createdDate).ToList();
             var storagesData = storages.Select((storage, i) => new
             {
                 index = i + 1,
