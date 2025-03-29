@@ -20,13 +20,36 @@ namespace drakek.Controller
     {
         SupportFunctions supportFunctions = new SupportFunctions();
         RoleController roleController = new RoleController();
-        public List<People> getAllPeople(){
+        public List<People> getAllPeople(Dictionary<string, string> filters = null){
             var PeopleData = new List<People>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    PeopleData = context.people.ToList();
+                    var query = context.people.AsQueryable();
+                    if(filters != null){
+                        IQueryable<People> orQuery = context.people.Where(c => false);
+                        foreach (var filter in filters)
+                        {
+                            string key = filter.Key.ToLower();
+                            string value = filter.Value.ToLower();
+                            switch (key){
+                                case "name":
+                                    orQuery = orQuery.Union(context.people.Where(p => p.name != null && p.name.ToLower().Contains(value)));
+                                    break;
+                                case "email":
+                                    orQuery = orQuery.Union(context.people.Where(p => p.phone != null && p.phone.ToLower().Contains(value)));
+                                    break;
+                                case "phone":
+                                    orQuery = orQuery.Union(context.people.Where(p => p.email != null && p.email.ToLower().Contains(value)));
+                                    break;
+                            }
+                        }
+
+                        query = orQuery;
+
+                    }
+                    PeopleData = query.ToList();
                 }
             }
             catch (Exception ex)
