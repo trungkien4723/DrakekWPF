@@ -15,6 +15,7 @@ namespace drakek.ViewModel
         private PeopleController peopleController = new PeopleController();
         private SupportFunctions supportFunctions = new SupportFunctions();
         private RoleController roleController = new RoleController();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
         public RoleView()
         {
             InitializeComponent();
@@ -56,16 +57,24 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 roleController.deleteRole(role.id);
-                showRolePanel();
+                showRolePanel(filters);
             }
         }
-        public void showRolePanel()
+
+        private void searchRoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (filters.ContainsKey("name")) filters["name"] = SearchRole.Text;
+            else filters.Add("name", SearchRole.Text);
+                
+            showRolePanel(filters);
+        }
+        public void showRolePanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Role> roles = roleController.getAllRoles();
+            List<Role> roles = roleController.getAllRoles(searchFilters).OrderByDescending(r => r.createdDate).ToList();
             var rolesData = roles.Select((role, i) => new
             {
                 index = i + 1,

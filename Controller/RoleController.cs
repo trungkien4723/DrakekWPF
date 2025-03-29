@@ -17,18 +17,35 @@ namespace drakek.Controller
     public class RoleController
     {
         SupportFunctions supportFunctions = new SupportFunctions();
-        public List<Role> getAllRoles(){
+        public List<Role> getAllRoles(Dictionary<string, string> filters = null){
             var rolesData = new List<Role>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    rolesData = context.role.Select(role => new Role
+                    var query = context.role.AsQueryable();
+                    if(filters != null){
+                        IQueryable<Role> orQuery = context.role.Where(c => false);
+                        foreach (var filter in filters)
                         {
-                            id = role.id,
-                            name = role.name,
-                            permission = role.permission != null ? role.permission : "No Permission"
-                        }).ToList();
+                            string key = filter.Key.ToLower();
+                            string value = filter.Value.ToLower();
+                            switch (key){
+                                case "name":
+                                    orQuery = orQuery.Union(context.role.Where(r => r.name != null && r.name.ToLower().Contains(value)));
+                                    break;
+                            }
+                        }
+
+                        query = orQuery;
+
+                    }
+                    rolesData = query.Select(role => new Role
+                    {
+                        id = role.id,
+                        name = role.name,
+                        permission = role.permission != null ? role.permission : "No Permission"
+                    }).ToList();
                 }
             }
             catch (Exception ex)
