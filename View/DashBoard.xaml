@@ -5,7 +5,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
-    <Grid>
-        <TextBlock Text="This is Dashboard" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>
+    <Grid x:Name="DashboardViewPanel">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="5">
+            <Grid Margin="5" Background="Green" Width="200" Height="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Stretch" TextAlignment="Center" 
+                           Text="Total Orders" FontWeight="Bold" FontSize="24" 
+                           Background="LightGreen" Foreground="White"/>
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" TextAlignment="Center"
+                           Text="{Binding ordersCount}"  FontSize="60" FontWeight="Bold" Foreground="White"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="5">
+            <Grid Margin="5" Background="Red" Width="200" Height="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Stretch" TextAlignment="Center" 
+                           Text="Total Products" FontWeight="Bold" FontSize="24" 
+                           Background="Pink" Foreground="White"/>
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" TextAlignment="Center"
+                           Text="{Binding productsCount}"  FontSize="60" FontWeight="Bold" Foreground="White"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="5">
+            <Grid Margin="5" Background="Yellow" Width="200" Height="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Stretch" TextAlignment="Center" 
+                           Text="Total Customers" FontWeight="Bold" FontSize="24" 
+                           Background="LightYellow"/>
+                <TextBlock Grid.Row="1" VerticalAlignment="Center" TextAlignment="Center"
+                           Text="{Binding customersCount}"  FontSize="60" FontWeight="Bold"/>
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>
