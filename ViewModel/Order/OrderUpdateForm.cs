@@ -61,6 +61,8 @@ namespace drakek.ViewModel
                 selectedCoupon = orderToUpdate.coupon ?? "noCoupon";
                 selectedStaff = orderToUpdate.people;
                 OrderPeople.SelectedValue = selectedStaff;
+                OrderDescription.Text = orderToUpdate.description;
+                OrderDiscount.Text = orderToUpdate.discount.ToString();
                 Customer orderCustomer = customerController.getCustomer(orderToUpdate.customer);
                 if(orderCustomer != null){
                     CustomerNameInput.Text = orderCustomer.name;
@@ -95,7 +97,7 @@ namespace drakek.ViewModel
                 else supportFunctions.mainWindow.changePage("menuDashboard");
             }
             else{
-                if(orderView.checkAccessPermission()) orderView.showOrderPanel();
+                if(orderView.checkAccessPermission()) orderView.showOrderPanel(orderView.filters);
                 else supportFunctions.mainWindow.changePage("menuDashboard");
             }
         }
@@ -178,7 +180,7 @@ namespace drakek.ViewModel
                     List<ProductOnStock> sellProducts = new List<ProductOnStock>();
                     foreach(Stock stock in stocks){
                         sellProducts.Add(new ProductOnStock(){
-                            id = stock.product + "-" + stock.storage,
+                            id = (stock.product + "-" + stock.storage).Trim(),
                             name = productController.getProduct(stock.product).name + " - " + storageController.getStorage(stock.storage).name
                         });
                     }
@@ -423,7 +425,7 @@ namespace drakek.ViewModel
                 orderToUpdate.discount = discount;
                 orderToUpdate.totalPrice = totalPrice;
                 if(orderToUpdate.paid + orderToUpdate.discount >= orderToUpdate.totalPrice){
-                    orderToUpdate.status = "Complete";
+                    orderToUpdate.status = "Completed";
                     if(orderToUpdate.completedDate == null) orderToUpdate.completedDate = DateTime.Now;
                 }
                 else{
