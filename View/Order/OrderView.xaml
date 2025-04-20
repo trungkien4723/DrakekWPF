@@ -70,24 +70,31 @@
                         <DataGridTextColumn Header="Code" Binding="{Binding id}"/>
                         <DataGridTextColumn Header="Staff" Binding="{Binding people}"/>
                         <DataGridTextColumn Header="Customer" Binding="{Binding customer}"/>
-                        <DataGridTextColumn Header="Products" Binding="{Binding products}"/>
                         <DataGridTextColumn Header="Description" Binding="{Binding description}"/>
                         <DataGridTextColumn Header="Total price" Binding="{Binding totalPrice}"/>
                         <DataGridTextColumn Header="Created" Binding="{Binding createdDate}"/>
+                        <DataGridTemplateColumn Header="Status" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="5">
+                                        <TextBlock Text="{Binding status}" Margin="5" Width="70"/>
+                                        <ComboBox x:Name="OrderStatus" Margin="5" Width="70"
+                                            SelectedValuePath="Content"
+                                            SelectionChanged="orderStatus_SelectionChanged">
+                                            <ComboBoxItem Content="Pending"/>
+                                            <ComboBoxItem Content="Completed"/>
+                                            <ComboBoxItem Content="Cancelled"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Actions" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Button Content="Edit" Margin="5,0" Click="editOrderButton_Click"/>
                                         <Button Content="Delete" Margin="5,0" Click="deleteOrderButton_Click"/>
-                                        <ComboBox Grid.Column="1" x:Name="OrderStatus" Margin="5" Width="70" 
-                                            SelectedValuePath="Content"
-                                            DisplayMemberPath="Content"
-                                            SelectionChanged="orderStatus_SelectionChanged">
-                                            <ComboBoxItem Content="Pending"/>
-                                            <ComboBoxItem Content="Completed"/>
-                                            <ComboBoxItem Content="Cancelled"/>
-                                        </ComboBox>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

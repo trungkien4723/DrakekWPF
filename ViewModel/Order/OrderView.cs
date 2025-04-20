@@ -144,8 +144,8 @@ namespace drakek.ViewModel
                     discount = order.discount.ToString(),
                     totalPrice = order.totalPrice.ToString(),
                     createdDate = order.createdDate.ToString("d"),
-                    order.status,
                     products = !string.IsNullOrEmpty(productNames) ? productNames : "No products",
+                    order.status
                 };
             }).ToList();
             if(OrderTable != null) OrderTable.ItemsSource = allOrderData;
