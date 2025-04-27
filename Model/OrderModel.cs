@@ -12,7 +12,9 @@ namespace drakek.Model
         public int? paid { get; set; }
         public int? discount { get; set; }
         public DateTime createdDate { get; set; }
+        public DateTime? completedDate { get; set; }
         public int totalPrice { get; set; }
+        public string status { get; set; }
     }
 
     public class OrderProduct{

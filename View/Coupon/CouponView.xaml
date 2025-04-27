@@ -12,14 +12,30 @@
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label Content="Coupon" Margin="10, 0, 10, 0" FontWeight="Bold"/>
-                <Button x:Name="AddCoupon"
-                    Content="Add"
-                    Margin="10, 0, 10, 0"
-                    Width="75"
-                    Click="addCouponButtonClick"/>
-            </StackPanel>
+            <Grid Grid.Row="0" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="5">
+                    <Label Grid.Column="0" Content="Search" Margin="10, 0, 10, 0" FontWeight="Bold"/>
+                    <TextBox x:Name="SearchCoupon" Margin="10, 0, 10, 0" Width="200"/>
+                    <Button
+                        Content="Search"
+                        Margin="10, 0, 10, 0"
+                        Width="75"
+                        Click="searchCouponButton_Click"/>   
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5">
+                    <Label Grid.Column="0" Content="Coupon" Margin="10, 0, 10, 0" FontWeight="Bold"/>
+                    <Button x:Name="AddCoupon"
+                        Content="Add"
+                        Margin="10, 0, 10, 0"
+                        Width="75"
+                        Click="addCouponButtonClick"/>    
+                </StackPanel>
+                    
+            </Grid>
             <Grid Grid.Row="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <DataGrid x:Name="CouponTable"

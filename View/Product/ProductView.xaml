@@ -12,14 +12,29 @@
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label Content="PRODUCTS" Margin="10, 0, 10, 0" FontWeight="Bold"/>
-                <Button x:Name="AddProduct"
-                    Content="Add"
-                    Margin="10, 0, 10, 0"
-                    Width="75"
-                    Click="addProductButtonClick"/>
-            </StackPanel>
+            <Grid Grid.Row="0" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="5">
+                    <Label Content="Search" Margin="10, 0, 10, 0" FontWeight="Bold"/>
+                    <TextBox x:Name="SearchProduct" Margin="10, 0, 10, 0" Width="200"/>
+                    <Button
+                        Content="Search"
+                        Margin="10, 0, 10, 0"
+                        Width="75"
+                        Click="searchProductButton_Click"/>   
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5">
+                    <Label Content="PRODUCTS" Margin="10, 0, 10, 0" FontWeight="Bold"/>
+                    <Button x:Name="AddProduct"
+                        Content="Add"
+                        Margin="10, 0, 10, 0"
+                        Width="75"
+                        Click="addProductButtonClick"/>
+                </StackPanel>
+            </Grid>
             <Grid Grid.Row="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <DataGrid x:Name="ProductTable"

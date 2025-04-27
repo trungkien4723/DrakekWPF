@@ -19,7 +19,7 @@ namespace drakek.ViewModel{
     /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private PeopleController peopleController = new PeopleController();
         private People CurrentUser;
@@ -47,9 +47,9 @@ namespace drakek.ViewModel{
         }
         public MainWindow(People user)
         {
+            DataContext = this;
             InitializeComponent();
             currentUser = user;
-            DataContext = this;
             loadMenuOptions();
         }
 
@@ -167,7 +167,7 @@ namespace drakek.ViewModel{
                 break; 
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -7,6 +7,8 @@ using drakek.Controller;
 using System.Windows;
 using drakek.Model;
 using Drakek.Controller;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace drakek.ViewModel
 {
@@ -34,6 +36,7 @@ namespace drakek.ViewModel
                 return;
             }
             List<Stock> stocks = stockController.getAllStocks();
+            stocks = stocks.OrderBy(s => s.expiredDate).ToList();
             var stocksData = stocks.Select((stock, i) => new
             {
                 index = i + 1,
@@ -43,7 +46,10 @@ namespace drakek.ViewModel
                 stock.createdDate,
                 stock.expiredDate
             }).ToList();
-            StockTable.ItemsSource = stocksData;
+            CollectionViewSource groupedStocks = (CollectionViewSource)FindResource("GroupedStocks");
+            groupedStocks.Source = stocksData;
+            groupedStocks.GroupDescriptions.Clear();
+            groupedStocks.GroupDescriptions.Add(new PropertyGroupDescription("product"));
             StockViewPanel.Visibility = Visibility.Visible;
         }
 
@@ -62,6 +68,23 @@ namespace drakek.ViewModel
         {
             return peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_all") == true
                 || peopleController.checkPeoplePermission(supportFunctions.currentUser(), "access_stock") == true;
+        }
+    }
+
+    public class TotalQuantityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var items = value as System.Collections.IEnumerable;
+            if (items == null) return 0;
+
+            // Sum up the quantity for all items in the group
+            return items.Cast<dynamic>().Sum(item => (int)item.quantity);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

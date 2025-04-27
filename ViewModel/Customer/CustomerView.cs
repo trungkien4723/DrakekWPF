@@ -15,6 +15,7 @@ namespace drakek.ViewModel
         private SupportFunctions supportFunctions = new SupportFunctions();
         private PeopleController peopleController = new PeopleController();
         private CustomerController customerController = new CustomerController();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
         public CustomerView()
         {
             InitializeComponent();
@@ -54,16 +55,29 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 customerController.deleteCustomer(customer.id);
-                showCustomerPanel();
+                showCustomerPanel(filters);
             }
         }
-        public void showCustomerPanel()
+
+        private void searchCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
+                filters = new Dictionary<string, string>
+                {
+                    { "name", SearchCustomer.Text },
+                    { "phone", SearchCustomer.Text },
+                    { "city", SearchCustomer.Text }
+                };
+                
+                showCustomerPanel(filters);
+        }
+
+        public void showCustomerPanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Customer> allCustomer = customerController.getAllCustomers();
+            List<Customer> allCustomer = customerController.getAllCustomers(searchFilters).OrderByDescending(c => c.createdDate).ToList();
             var allCustomerData = allCustomer.Select((customer, i) => new
             {
                 index = i + 1,
@@ -74,7 +88,7 @@ namespace drakek.ViewModel
                 createdDate = customer.createdDate.ToString("d"),
             }).ToList();
             CustomerTable.ItemsSource = allCustomerData;
-            CustomerViewPanel.Visibility = Visibility.Visible;
+            if(CustomerViewPanel.Visibility != Visibility.Visible) CustomerViewPanel.Visibility = Visibility.Visible;
         }
 
         public void closeCustomerPanel()

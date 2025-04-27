@@ -15,6 +15,8 @@ namespace drakek.ViewModel
         private SupportFunctions supportFunctions = new SupportFunctions();
         private PeopleController peopleController = new PeopleController();
         private ProductController productController = new ProductController();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
+
         public ProductView()
         {
             InitializeComponent();
@@ -57,16 +59,24 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 productController.deleteProduct(product.id);
-                showProductPanel();
+                showProductPanel(filters);
             }
         }
-        public void showProductPanel()
+
+        private void searchProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (filters.ContainsKey("name")) filters["name"] = SearchProduct.Text;
+            else filters.Add("name", SearchProduct.Text);
+                
+            showProductPanel(filters);
+        }
+        public void showProductPanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Product> products = productController.getAllProducts();
+            List<Product> products = productController.getAllProducts(searchFilters);
             var productsData = products.Select((product, i) => new
             {
                 index = i + 1,

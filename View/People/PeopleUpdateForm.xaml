@@ -27,7 +27,12 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
-                        <Image x:Name="ProfileImage" Width="100" Height="100"  MouseLeftButtonDown="profileImage_Click"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="7*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Name="ClearProfileImage" Click="clearProfileImage_Click" Content="Clear image" Width="100" Height="25"/>
+                        <Image Grid.Column="1" x:Name="ProfileImage" Width="100" Height="100"  MouseLeftButtonDown="profileImage_Click"/>
                     </Grid>
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>

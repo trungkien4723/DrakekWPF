@@ -17,13 +17,29 @@ namespace drakek.Controller
     public class StorageController
     {
         SupportFunctions supportFunctions = new SupportFunctions();
-        public List<Storage> getAllStorages(){
+        public List<Storage> getAllStorages(Dictionary<string, string> filters = null){
             var storagesData = new List<Storage>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    storagesData = context.storage.ToList();
+                    var query = context.storage.AsQueryable();
+                    if(filters != null){
+                        IQueryable<Storage> orQuery = context.storage.Where(c => false);
+                        foreach (var filter in filters)
+                        {
+                            string key = filter.Key.ToLower();
+                            string value = filter.Value.ToLower();
+                            switch (key){
+                                case "name":
+                                    orQuery = orQuery.Union(context.storage.Where(p => p.name != null && p.name.ToLower().Contains(value)));
+                                    break;
+                            }
+                        }
+
+                        query = orQuery;
+                    }
+                    storagesData = query.ToList();
                 }
             }
             catch (Exception ex)

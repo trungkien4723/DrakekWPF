@@ -12,16 +12,44 @@
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Label Content="Order" Margin="10, 0, 10, 0" FontWeight="Bold"/>
-                <Button x:Name="AddOrder"
-                    Content="Add"
-                    Margin="10, 0, 10, 0"
-                    Width="75"
-                    Click="addOrderButtonClick"/>
-            </StackPanel>
+            <Grid Grid.Row="0" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="5">
+                    <Label Content="Search" Margin="10, 0, 10, 0" FontWeight="Bold"/>
+                    <TextBox x:Name="SearchOrder" Margin="10, 0, 10, 0" Width="200"/>
+                    <Button
+                        Content="Search"
+                        Margin="10, 0, 10, 0"
+                        Width="75"
+                        Click="searchOrderButton_Click"/>   
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5">
+                    <Label Content="Order" Margin="10, 0, 10, 0" FontWeight="Bold"/>
+                    <Button x:Name="AddOrder"
+                        Content="Add"
+                        Margin="10, 0, 10, 0"
+                        Width="75"
+                        Click="addOrderButtonClick"/>
+                </StackPanel>
+            </Grid>
             <Grid Grid.Row="1">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ComboBox Grid.Row="0" x:Name="OrderStatusFilter" Margin="5" Width="150" 
+                    SelectedValuePath="Content" 
+                    SelectedValue="All"
+                    SelectionChanged="orderStatusFilter_SelectionChanged">
+                    <ComboBoxItem Content="All"/>
+                    <ComboBoxItem Content="Pending"/>
+                    <ComboBoxItem Content="Completed"/>
+                    <ComboBoxItem Content="Cancelled"/>
+                </ComboBox>
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <DataGrid x:Name="OrderTable"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
@@ -30,7 +58,6 @@
                     CanUserResizeColumns="False"
                     CanUserResizeRows="False"
                     CanUserSortColumns="False"
-                    IsReadOnly="True"
                     SelectionMode="Single"
                     SelectionUnit="FullRow"
                     HorizontalAlignment="Left"
@@ -40,7 +67,28 @@
                     Width="550">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No" Binding="{Binding index}" Width="50"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding id}" Width="300"/>
+                        <DataGridTextColumn Header="Code" Binding="{Binding id}"/>
+                        <DataGridTextColumn Header="Staff" Binding="{Binding people}"/>
+                        <DataGridTextColumn Header="Customer" Binding="{Binding customer}"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding description}"/>
+                        <DataGridTextColumn Header="Total price" Binding="{Binding totalPrice}"/>
+                        <DataGridTextColumn Header="Created" Binding="{Binding createdDate}"/>
+                        <DataGridTemplateColumn Header="Status" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="5">
+                                        <TextBlock Text="{Binding status}" Margin="5" Width="70"/>
+                                        <ComboBox x:Name="OrderStatus" Margin="5" Width="70"
+                                            SelectedValuePath="Content"
+                                            SelectionChanged="orderStatus_SelectionChanged">
+                                            <ComboBoxItem Content="Pending"/>
+                                            <ComboBoxItem Content="Completed"/>
+                                            <ComboBoxItem Content="Cancelled"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="Actions" Width="150">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

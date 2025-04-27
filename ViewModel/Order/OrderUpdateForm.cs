@@ -61,6 +61,8 @@ namespace drakek.ViewModel
                 selectedCoupon = orderToUpdate.coupon ?? "noCoupon";
                 selectedStaff = orderToUpdate.people;
                 OrderPeople.SelectedValue = selectedStaff;
+                OrderDescription.Text = orderToUpdate.description;
+                OrderDiscount.Text = orderToUpdate.discount.ToString();
                 Customer orderCustomer = customerController.getCustomer(orderToUpdate.customer);
                 if(orderCustomer != null){
                     CustomerNameInput.Text = orderCustomer.name;
@@ -78,6 +80,8 @@ namespace drakek.ViewModel
                 selectedCoupon = "noCoupon";
             }
             OrderCoupon.SelectedValue = selectedCoupon;
+            if(orderType.ToLower() == "buy") OrderCouponGrid.Visibility = Visibility.Collapsed;
+            else OrderCouponGrid.Visibility = Visibility.Visible;
             Visibility = Visibility.Visible;
             if(orderView != null) orderView.closeOrderPanel();
             else if(stockView != null) stockView.closeStockPanel();
@@ -87,21 +91,20 @@ namespace drakek.ViewModel
             clearForm();
             Visibility = Visibility.Collapsed;
             if(orderType == "buy"){
-                StockView stockView = new StockView(); 
                 if(stockView.checkAccessPermission()){
                     stockView.showStockPanel();
                 }
                 else supportFunctions.mainWindow.changePage("menuDashboard");
             }
             else{
-                if(orderView.checkAccessPermission()) orderView.showOrderPanel();
+                if(orderView.checkAccessPermission()) orderView.showOrderPanel(orderView.filters);
                 else supportFunctions.mainWindow.changePage("menuDashboard");
             }
         }
         private void clearForm()
         {
             OrderProductsForm.Children.Clear();
-            selectedStaff = "";
+            selectedStaff = supportFunctions.currentUser().id;
             CustomerNameInput.Text = "";
             CustomerPhoneInput.Text = "";
             CustomerAddressInput.Text = "";
@@ -177,7 +180,7 @@ namespace drakek.ViewModel
                     List<ProductOnStock> sellProducts = new List<ProductOnStock>();
                     foreach(Stock stock in stocks){
                         sellProducts.Add(new ProductOnStock(){
-                            id = stock.product + "-" + stock.storage,
+                            id = (stock.product + "-" + stock.storage).Trim(),
                             name = productController.getProduct(stock.product).name + " - " + storageController.getStorage(stock.storage).name
                         });
                     }
@@ -262,7 +265,7 @@ namespace drakek.ViewModel
             if(!updateValidated()) return;
             try{
                 int totalPrice = 0;
-                orderProducts = new List<OrderProduct>();
+                List<OrderProduct> newOrderProducts = new List<OrderProduct>();
                 foreach (Grid productInputGrid in OrderProductsForm.Children)
                 {
                     string productId = "";
@@ -316,8 +319,8 @@ namespace drakek.ViewModel
                                 }
                                 else if (control is ComboBox comboBox && Grid.GetColumn(comboBox) == 0)
                                 {
-                                    productId = comboBox.Text.Split("-")[0];
-                                    productStorage = comboBox.Text.Split("-")[1];
+                                    productId = comboBox.SelectedValue.ToString().Split("-")[0];
+                                    productStorage = comboBox.SelectedValue.ToString().Split("-")[1];
                                 }
                                 else if (control is DatePicker datePicker && Grid.GetColumn(datePicker) == 4)
                                 {
@@ -326,7 +329,7 @@ namespace drakek.ViewModel
                             }
                         break;
                     }
-                    orderProducts.Add(new OrderProduct
+                    newOrderProducts.Add(new OrderProduct
                     {
                         product = productId,
                         quantity = productQuantity,
@@ -344,18 +347,55 @@ namespace drakek.ViewModel
                             };
                         }
                         else{
-                            stock.quantity += productQuantity;
+                            if(string.IsNullOrEmpty(id)){
+                                stock.quantity += productQuantity;
+                            }
+                            else{
+                                OrderProduct oldOrderproduct = orderProducts.FirstOrDefault(op => op.product == productId && op.storage == productStorage);
+                                if(oldOrderproduct != null){
+                                    stock.quantity += productQuantity - oldOrderproduct.quantity;
+                                }
+                                else{
+                                    stock.quantity += productQuantity;
+                                }
+                            }
                         }
                         stockController.updateStock(stock);
                     }
+                    else{
+                        Stock stock = stockController.getStock(productId, productStorage);
+                        if(stock != null){
+                            if(stock.quantity - productQuantity < 0){
+                                MessageBox.Show("Not enough product in stock", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+
+                            if(string.IsNullOrEmpty(id)){
+                                stock.quantity -= productQuantity;
+                            }
+                            else{
+                                OrderProduct oldOrderproduct = orderProducts.FirstOrDefault(op => op.product == productId && op.storage == productStorage);
+                                if(oldOrderproduct != null){
+                                    stock.quantity -= productQuantity - oldOrderproduct.quantity;
+                                }
+                                else{
+                                    stock.quantity -= productQuantity;
+                                }
+                            }
+                            stockController.updateStock(stock);
+                        }
+                        else{
+                            MessageBox.Show("Product not found in stock", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                    }
                     totalPrice += productPrice;
                 }
-
                 int discount = int.TryParse(OrderDiscount.Text, out int d) ? d : 0;
                 totalPrice -= discount;
 
                 orderToUpdate.id = id;
-                orderToUpdate.products = JsonSerializer.Serialize(orderProducts);
+                orderToUpdate.products = JsonSerializer.Serialize(newOrderProducts);
                 orderToUpdate.people = selectedStaff;
 
                 Customer customer = customerController.getCustomerByPhone(CustomerPhoneInput.Text);
@@ -384,7 +424,14 @@ namespace drakek.ViewModel
                 orderToUpdate.paid = int.TryParse(OrderPaid.Text, out int p) ? p : 0;
                 orderToUpdate.discount = discount;
                 orderToUpdate.totalPrice = totalPrice;
-                
+                if(orderToUpdate.paid + orderToUpdate.discount >= orderToUpdate.totalPrice){
+                    orderToUpdate.status = "Completed";
+                    if(orderToUpdate.completedDate == null) orderToUpdate.completedDate = DateTime.Now;
+                }
+                else{
+                    orderToUpdate.status = "Pending";
+                    orderToUpdate.completedDate = null;
+                }
                 orderController.updateOrder(orderToUpdate);
                 closeForm();
             }

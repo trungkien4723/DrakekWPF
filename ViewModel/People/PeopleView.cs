@@ -15,6 +15,7 @@ namespace drakek.ViewModel
         private PeopleController peopleController = new PeopleController();
         private RoleController roleController = new RoleController();
         private SupportFunctions supportFunctions = new SupportFunctions();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
         public PeopleView()
         {
             InitializeComponent();
@@ -22,6 +23,19 @@ namespace drakek.ViewModel
             PeopleUpdateForm.peopleView = this;
         }
 
+        private void searchPeopleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (filters.ContainsKey("name")) filters["name"] = SearchPeople.Text;
+            else filters.Add("name", SearchPeople.Text);
+            if (filters.ContainsKey("phone")) filters["phone"] = SearchPeople.Text;
+            else filters.Add("phone", SearchPeople.Text);
+            if (filters.ContainsKey("email")) filters["email"] = SearchPeople.Text;
+            else filters.Add("email", SearchPeople.Text);
+            if (filters.ContainsKey("customer")) filters["customer"] = SearchPeople.Text;
+            else filters.Add("customer", SearchPeople.Text);
+                
+            showPeoplePanel(filters);
+        }
         private void addPeopleButtonClick(object sender, RoutedEventArgs e)
         {
             showUpdatePeopleForm("");
@@ -55,16 +69,16 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 peopleController.deletePeople(people.id);
-                showPeoplePanel();
+                showPeoplePanel(filters);
             }
         }
-        public void showPeoplePanel()
+        public void showPeoplePanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<People> allPeople = peopleController.getAllPeople();
+            List<People> allPeople = peopleController.getAllPeople(searchFilters).OrderByDescending(p => p.createdDate).ToList();
             var allPeopleData = allPeople.Select((people, i) => new
             {
                 index = i + 1,

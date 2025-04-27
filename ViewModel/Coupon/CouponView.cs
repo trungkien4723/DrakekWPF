@@ -15,6 +15,7 @@ namespace drakek.ViewModel
         private SupportFunctions supportFunctions = new SupportFunctions();
         private CouponController couponController = new CouponController();
         private PeopleController peopleController = new PeopleController();
+        public Dictionary<string, string> filters = new Dictionary<string, string>();
         public CouponView()
         {
             InitializeComponent();
@@ -54,16 +55,26 @@ namespace drakek.ViewModel
             if (result == MessageBoxResult.Yes)
             {
                 couponController.deleteCoupon(coupon.id);
-                showCouponPanel();
+                showCouponPanel(filters);
             }
         }
-        public void showCouponPanel()
+        private void searchCouponButton_Click(object sender, RoutedEventArgs e)
+        {
+                filters = new Dictionary<string, string>
+                {
+                    { "name", SearchCoupon.Text },
+                    { "description", SearchCoupon.Text }
+                };
+                
+                showCouponPanel(filters);
+        }
+        public void showCouponPanel(Dictionary<string, string> searchFilters = null)
         {   
             if (!checkAccessPermission()){
                 supportFunctions.mainWindow.show403Page();
                 return;
             }
-            List<Coupon> allCoupon = couponController.getAllCoupons();
+            List<Coupon> allCoupon = couponController.getAllCoupons(searchFilters).OrderByDescending(c => c.createdDate).ToList();
             var allCouponData = allCoupon.Select((coupon, i) => new
             {
                 index = i + 1,
@@ -77,7 +88,7 @@ namespace drakek.ViewModel
                 endDate = coupon.endDate.ToString()
             }).ToList();
             CouponTable.ItemsSource = allCouponData;
-            CouponViewPanel.Visibility = Visibility.Visible;
+            if(CouponViewPanel.Visibility != Visibility.Visible) CouponViewPanel.Visibility = Visibility.Visible;
         }
 
         public void closeCouponPanel()

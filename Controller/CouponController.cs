@@ -11,19 +11,52 @@ using System.Windows.Shapes;
 using drakek.Model;
 using drakek.Data;
 using Drakek.Controller;
+using Microsoft.EntityFrameworkCore;
 
 namespace drakek.Controller
 {
     public class CouponController
     {
         SupportFunctions supportFunctions = new SupportFunctions();
-        public List<Coupon> getAllCoupons(){
+        public List<Coupon> getAllCoupons(Dictionary<string, string> filters = null){
             var couponsData = new List<Coupon>();
             try
             {
                 using (var context = new DrakekDB())
                 {
-                    couponsData = context.coupon.ToList();
+                    var query = context.coupon.AsQueryable();
+                    if (filters != null){
+                        IQueryable<Coupon> orQuery = context.coupon.Where(c => false);
+                        foreach (var filter in filters)
+                        {
+                            string key = filter.Key.ToLower();
+                            string value = filter.Value.ToLower();
+                            switch (key){
+                                case "name":
+                                    orQuery = orQuery.Union(context.coupon.Where(c => c.name != null && c.name.ToLower().Contains(value)));
+                                    break;
+                                case "description":
+                                    orQuery = orQuery.Union(context.coupon.Where(c => c.description != null && c.description.ToLower().Contains(value)));
+                                    break;
+                                case "valuetype":
+                                    orQuery = orQuery.Union(context.coupon.Where(c => c.valueType != null && c.valueType.ToLower().Contains(value)));
+                                    break;
+                                case "startdate":
+                                    if (DateTime.TryParse(value, out DateTime startDate)){
+                                        orQuery = orQuery.Union(context.coupon.Where(c => c.startDate >= startDate));
+                                    }
+                                    break;
+                                case "enddate":
+                                    if (DateTime.TryParse(value, out DateTime endDate)){
+                                        orQuery = orQuery.Union(context.coupon.Where(c => c.endDate <= endDate));
+                                    }
+                                    break;
+                            }
+                        }
+
+                        query = orQuery;
+                    }
+                    couponsData = query.ToList();
                 }
             }
             catch (Exception ex)
